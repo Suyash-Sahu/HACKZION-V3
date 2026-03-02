@@ -43,7 +43,7 @@ export const BentoTilt = ({ children, className = "" }) => {
 
 const Sponsors = () => {
   return (
-    <div id="contact" className="min-h-dvh w-screen bg-black text-blue-50 py-20">
+    <div id="sponsors" className="min-h-dvh w-screen bg-black text-blue-50 py-20">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <AnimatedTitle

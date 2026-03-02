@@ -5,8 +5,8 @@ export function ThreeDCardRing({
   cards = [],
   width = 280,
   height = 350,
-  mobileWidth = 160,
-  mobileHeight = 200,
+  mobileWidth = 120,
+  mobileHeight = 150,
   perspective = 1200,
   cardDistance = 220,
   initialRotation = 0,
@@ -54,20 +54,20 @@ export function ThreeDCardRing({
     const handleResize = () => {
       const viewportWidth = window.innerWidth;
       const isMobile = viewportWidth <= mobileBreakpoint;
-      const newScale = isMobile ? mobileScaleFactor : 1;
-      const newCardDistance = isMobile ? mobileCardDistance : cardDistance;
-      const newWidth = isMobile ? mobileWidth : width;
-      const newHeight = isMobile ? mobileHeight : height;
-      
-      setCurrentScale(newScale);
-      setCurrentCardDistance(newCardDistance);
-      setCurrentWidth(newWidth);
-      setCurrentHeight(newHeight);
+
+      // Scale card distance proportionally to viewport width on mobile
+      const mobileDistanceScaled = isMobile
+        ? Math.min(mobileCardDistance, viewportWidth * 0.4)
+        : cardDistance;
+
+      setCurrentScale(isMobile ? mobileScaleFactor : 1);
+      setCurrentCardDistance(mobileDistanceScaled);
+      setCurrentWidth(isMobile ? mobileWidth : width);
+      setCurrentHeight(isMobile ? mobileHeight : height);
     };
 
     window.addEventListener("resize", handleResize);
     handleResize();
-
     return () => window.removeEventListener("resize", handleResize);
   }, [mobileBreakpoint, mobileScaleFactor, cardDistance, mobileCardDistance, width, height, mobileWidth, mobileHeight]);
 
@@ -75,28 +75,21 @@ export function ThreeDCardRing({
     setShowCards(true);
   }, []);
 
-  // Auto-rotation effect
   useEffect(() => {
     if (!autoRotate) return;
-    
+
     let animationFrame;
-    const rotationSpeed = autoRotateSpeed * 0.1; // Adjust speed factor
-    
+    const rotationSpeed = autoRotateSpeed * 0.1;
+
     const rotate = () => {
-      if (!isDragging.current) { // Only rotate if not being dragged
-        const currentValue = rotationY.get();
-        rotationY.set(currentValue + rotationSpeed);
+      if (!isDragging.current) {
+        rotationY.set(rotationY.get() + rotationSpeed);
       }
       animationFrame = requestAnimationFrame(rotate);
     };
-    
+
     animationFrame = requestAnimationFrame(rotate);
-    
-    return () => {
-      if (animationFrame) {
-        cancelAnimationFrame(animationFrame);
-      }
-    };
+    return () => { if (animationFrame) cancelAnimationFrame(animationFrame); };
   }, [autoRotate, autoRotateSpeed]);
 
   const handleDragStart = (event) => {
@@ -106,11 +99,9 @@ export function ThreeDCardRing({
     startX.current = clientX;
     rotationY.stop();
     velocity.current = 0;
-    
-    if (ringRef.current) {
-      ringRef.current.style.cursor = "grabbing";
-    }
-    
+
+    if (ringRef.current) ringRef.current.style.cursor = "grabbing";
+
     document.addEventListener("mousemove", handleDrag);
     document.addEventListener("mouseup", handleDragEnd);
     document.addEventListener("touchmove", handleDrag);
@@ -119,11 +110,9 @@ export function ThreeDCardRing({
 
   const handleDrag = (event) => {
     if (!draggable || !isDragging.current) return;
-
     const clientX = event.type.includes("touch") ? event.touches[0].clientX : event.clientX;
     const deltaX = clientX - startX.current;
     const rotationDelta = -deltaX * 0.8;
-    
     velocity.current = rotationDelta;
     rotationY.set(currentRotationY.current + rotationDelta);
     startX.current = clientX;
@@ -132,9 +121,8 @@ export function ThreeDCardRing({
 
   const handleDragEnd = () => {
     if (!draggable || !isDragging.current) return;
-    
     isDragging.current = false;
-    
+
     if (ringRef.current) {
       ringRef.current.style.cursor = "grab";
       currentRotationY.current = rotationY.get();
@@ -146,8 +134,7 @@ export function ThreeDCardRing({
     document.removeEventListener("touchend", handleDragEnd);
 
     const initial = rotationY.get();
-    const velocityBoost = velocity.current * 15;
-    const target = initial + velocityBoost;
+    const target = initial + velocity.current * 15;
 
     animate(initial, target, {
       type: "spring",
@@ -165,34 +152,18 @@ export function ThreeDCardRing({
   };
 
   const cardVariants = {
-    hidden: { 
-      y: 300, 
-      opacity: 0,
-      rotateX: -15,
-      scale: 0.8
-    },
-    visible: {
-      y: 0,
-      opacity: 1,
-      rotateX: 0,
-      scale: 1
-    },
+    hidden: { y: 300, opacity: 0, rotateX: -15, scale: 0.8 },
+    visible: { y: 0, opacity: 1, rotateX: 0, scale: 1 },
   };
 
   return (
     <div
       ref={containerRef}
-      className={`w-full ${containerHeight} flex items-center justify-center overflow-hidden select-none relative ${containerClassName}`}
-      style={{
-        background: `${backgroundColor}`,
-        transform: `scale(${currentScale})`,
-        transformOrigin: "center center",
-      }}
+      className={`w-full ${containerHeight} flex items-center justify-center overflow-visible select-none relative ${containerClassName}`}
+      style={{ background: backgroundColor }}
       onMouseDown={draggable ? handleDragStart : undefined}
       onTouchStart={draggable ? handleDragStart : undefined}
     >
-
-
       <div
         style={{
           perspective: `${perspective}px`,
@@ -201,7 +172,7 @@ export function ThreeDCardRing({
           position: "absolute",
           left: "50%",
           top: "50%",
-          transform: "translate(-50%, -50%)",
+          transform: `translate(-50%, -50%) scale(${currentScale})`,
         }}
       >
         <motion.div
@@ -223,10 +194,10 @@ export function ThreeDCardRing({
                   transformStyle: "preserve-3d",
                   backfaceVisibility: "hidden",
                   rotateY: index * -angle,
-                  z: -currentCardDistance * currentScale,
-                  transformOrigin: `50% 50% ${currentCardDistance * currentScale}px`,
+                  z: -currentCardDistance,
+                  transformOrigin: `50% 50% ${currentCardDistance}px`,
                   borderRadius: "20px",
-                  boxShadow: hoveredIndex === index 
+                  boxShadow: hoveredIndex === index
                     ? "0 30px 60px -15px rgba(139, 92, 246, 0.4), 0 0 0 1px rgba(139, 92, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.2)"
                     : "0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1)",
                   background: "linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%)",
@@ -243,21 +214,16 @@ export function ThreeDCardRing({
                   duration: animationDuration,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                whileHover={{ 
-                  opacity: 1, 
-                  scale: 1.08, 
-                  z: -currentCardDistance * currentScale - 60,
+                whileHover={{
+                  opacity: 1,
+                  scale: 1.08,
+                  z: -currentCardDistance - 60,
                   rotateX: 2,
-                  transition: { 
-                    type: "spring",
-                    stiffness: 400,
-                    damping: 25
-                  } 
+                  transition: { type: "spring", stiffness: 400, damping: 25 },
                 }}
                 onHoverStart={() => {
                   if (isDragging.current || !ringRef.current) return;
                   setHoveredIndex(index);
-                  
                   requestAnimationFrame(() => {
                     Array.from(ringRef.current.children).forEach((cardEl, i) => {
                       if (i !== index) {
@@ -271,33 +237,23 @@ export function ThreeDCardRing({
                 onHoverEnd={() => {
                   if (isDragging.current || !ringRef.current) return;
                   setHoveredIndex(null);
-                  
                   requestAnimationFrame(() => {
                     Array.from(ringRef.current.children).forEach((cardEl) => {
-                      cardEl.style.opacity = `1`;
+                      cardEl.style.opacity = "1";
                       cardEl.style.filter = "blur(0px) brightness(1)";
                       cardEl.style.transition = "opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), filter 0.4s cubic-bezier(0.4, 0, 0.2, 1)";
                     });
                   });
                 }}
               >
-                {/* Enhanced gloss overlay with animation */}
-                <motion.div 
+                <motion.div
                   className="absolute inset-0 pointer-events-none"
                   style={{
                     background: "linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%, rgba(255, 255, 255, 0.08) 100%)",
                     mixBlendMode: "overlay",
                   }}
-                  animate={hoveredIndex === index ? {
-                    backgroundPosition: ["0% 0%", "100% 100%"],
-                  } : {}}
-                  transition={{
-                    duration: 0.6,
-                    ease: "easeInOut"
-                  }}
                 />
-                
-                {/* Glow effect on hover */}
+
                 {hoveredIndex === index && (
                   <motion.div
                     className="absolute inset-0 pointer-events-none"
@@ -310,25 +266,19 @@ export function ThreeDCardRing({
                     }}
                   />
                 )}
-                
-                {/* Card content */}
-                <div className="w-full h-full relative" style={{ 
-                  borderRadius: "20px",
-                  overflow: "hidden"
-                }}>
+
+                <div className="w-full h-full relative" style={{ borderRadius: "20px", overflow: "hidden" }}>
                   {card}
                 </div>
-                
-                {/* Enhanced bottom gradient */}
-                <div 
+
+                <div
                   className="absolute inset-x-0 bottom-0 h-1/2 pointer-events-none"
                   style={{
                     background: "linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.1) 50%, transparent 100%)",
                   }}
                 />
 
-                {/* Edge highlight */}
-                <div 
+                <div
                   className="absolute inset-0 pointer-events-none"
                   style={{
                     borderRadius: "20px",
@@ -344,35 +294,18 @@ export function ThreeDCardRing({
           </AnimatePresence>
         </motion.div>
       </div>
-      
-
-
-      
-      
     </div>
   );
 }
 
-// Demo component with sample cards
 export default function Demo() {
   const sampleCards = [
-    <div className="w-full h-full bg-gradient-to-br from-purple-600 via-purple-700 to-indigo-800 flex items-center justify-center text-white font-bold text-2xl">
-      Card 1
-    </div>,
-    <div className="w-full h-full bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-800 flex items-center justify-center text-white font-bold text-2xl">
-      Card 2
-    </div>,
-    <div className="w-full h-full bg-gradient-to-br from-pink-600 via-pink-700 to-rose-800 flex items-center justify-center text-white font-bold text-2xl">
-      Card 3
-    </div>,
-    <div className="w-full h-full bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-800 flex items-center justify-center text-white font-bold text-2xl">
-      Card 4
-    </div>,
-    <div className="w-full h-full bg-gradient-to-br from-amber-600 via-amber-700 to-orange-800 flex items-center justify-center text-white font-bold text-2xl">
-      Card 5
-    </div>,
+    <div className="w-full h-full bg-gradient-to-br from-purple-600 via-purple-700 to-indigo-800 flex items-center justify-center text-white font-bold text-2xl">Card 1</div>,
+    <div className="w-full h-full bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-800 flex items-center justify-center text-white font-bold text-2xl">Card 2</div>,
+    <div className="w-full h-full bg-gradient-to-br from-pink-600 via-pink-700 to-rose-800 flex items-center justify-center text-white font-bold text-2xl">Card 3</div>,
+    <div className="w-full h-full bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-800 flex items-center justify-center text-white font-bold text-2xl">Card 4</div>,
+    <div className="w-full h-full bg-gradient-to-br from-amber-600 via-amber-700 to-orange-800 flex items-center justify-center text-white font-bold text-2xl">Card 5</div>,
   ];
-
   return (
     <div className="w-full h-screen">
       <ThreeDCardRing cards={sampleCards} />

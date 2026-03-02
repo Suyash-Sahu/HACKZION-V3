@@ -1,8 +1,6 @@
 import { useState, useRef } from "react";
 import { TiLocationArrow } from "react-icons/ti";
 import AnimatedTitle from "./AnimatedTitle";
-import Welcome from "./Welcome";
-import ImageRingPage from "./Ring/ImageRingPage";
 
 export const BentoTilt = ({ children, className = "" }) => {
   const [transformStyle, setTransformStyle] = useState("");
@@ -66,14 +64,13 @@ export const BentoCard = ({ src, title, description, isComingSoon }) => {
         loop
         muted
         autoPlay
-        playsInline
         className="absolute left-0 top-0 size-full object-cover object-center"
       />
-      <div className="relative z-10 flex size-full flex-col justify-between p-4 md:p-5 text-blue-50">
+      <div className="relative z-10 flex size-full flex-col justify-between p-5 text-blue-50">
         <div>
-          <h1 className="bento-title special-font text-lg sm:text-xl md:text-2xl">{title}</h1>
+          <h1 className="bento-title special-font">{title}</h1>
           {description && (
-            <p className="mt-2 md:mt-3 max-w-64 text-xs md:text-base">{description}</p>
+            <p className="mt-3 max-w-64 text-xs md:text-base">{description}</p>
           )}
         </div>
 
@@ -83,8 +80,9 @@ export const BentoCard = ({ src, title, description, isComingSoon }) => {
             onMouseMove={handleMouseMove}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className="border-hsla relative flex w-fit cursor-pointer items-center gap-1 overflow-hidden rounded-full bg-black px-4 py-2 text-xs uppercase text-white/20"
+            className="border-hsla relative flex w-fit cursor-pointer items-center gap-1 overflow-hidden rounded-full bg-black px-5 py-2 text-xs uppercase text-white/20"
           >
+            {/* Radial gradient hover effect */}
             <div
               className="pointer-events-none absolute -inset-px opacity-0 transition duration-300"
               style={{
@@ -93,6 +91,7 @@ export const BentoCard = ({ src, title, description, isComingSoon }) => {
               }}
             />
             <TiLocationArrow className="relative z-20" />
+          
           </div>
         )}
       </div>
@@ -100,44 +99,97 @@ export const BentoCard = ({ src, title, description, isComingSoon }) => {
   );
 };
 
-const About = () => (
-  <section id="about-section" className="bg-black pb-24 sm:pb-36 md:pb-52 pt-10 md:pt-16">
-    <div className="container mx-auto px-4 md:px-10">
+const Tracks = () => (
+  <section id="about-section" className="bg-black pb-52 pt-16">
+    <div className="container mx-auto px-3 md:px-10">
 
-      <AnimatedTitle
-        title="ABOUT US"
-        containerClass="!text-white text-4xl sm:text-5xl md:text-7xl font-bold text-center w-full"
-      />
+      
 
-      {/* About HackZion Card */}
-      <BentoTilt className="border-hsla relative mt-6 md:mt-7 mb-3 w-full overflow-hidden rounded-md bg-gradient-to-br from-blue-900/20 to-purple-900/20"
-        style={{ minHeight: '260px' }}
-      >
-        <div className="relative z-10 flex size-full flex-col justify-center p-5 sm:p-8 text-blue-50">
-          <div className="animate-fade-in-up">
-            <p className="font-circular-web text-lg sm:text-xl md:text-2xl font-bold mb-3 md:mb-4">
-              About HackZion V3
-            </p>
-            <p className="font-circular-web text-sm sm:text-base md:text-lg opacity-80 leading-relaxed">
-              HackZion V.3 is a{" "}
-              <span className="font-semibold text-white">24-hour national-level hackathon </span>
-              organized by the Department of Computer Science and Engineering, AMC Engineering College, Bengaluru.
-              Now in its third edition, the event brings together students, developers, designers, and tech enthusiasts
-              from across the country to collaborate, innovate, and build impactful solutions to real-world challenges.
-              Participants are encouraged to push beyond boundaries, transform ideas into working prototypes, and
-              connect with mentors and industry professionals.
-            </p>
-          </div>
+      
+
+      <div className="px-5 py-10">
+        <div className="flex justify-center">
+          <AnimatedTitle
+            title="TRACKS"
+            containerClass="!text-center !text-white"
+          />
         </div>
-      </BentoTilt>
-
-      {/* Image Ring — responsive height */}
-      <div className="relative w-full overflow-visible rounded-md h-[45vh] sm:h-[55vh] md:h-[65vh] lg:h-[70vh] mt-4 sm:mt-6">
-        <ImageRingPage />
       </div>
 
+      <div className="grid w-full grid-cols-1 gap-7 md:grid-cols-2">
+
+        <BentoTilt className="bento-tilt_1 md:col-span-1 
+  h-[160px] 
+  sm:h-[190px] 
+  md:h-[220px] 
+  lg:h-[250px] 
+  xl:h-[280px]">
+          <BentoCard
+            src="videos/cyber.mp4"
+            title={
+              <>
+                CYBERSECURITY
+              </>
+            }
+
+
+          />
+        </BentoTilt>
+
+        <BentoTilt className="bento-tilt_1 md:col-span-1 
+  h-[160px] 
+  sm:h-[190px] 
+  md:h-[220px] 
+  lg:h-[250px] 
+  xl:h-[280px]">
+          <BentoCard
+            src="videos/AIML.mp4"
+            title={
+              <>
+                AIML
+              </>
+            }
+
+
+          />
+        </BentoTilt>
+
+        <BentoTilt className="bento-tilt_1 md:col-span-1 
+  h-[160px] 
+  sm:h-[190px] 
+  md:h-[220px] 
+  lg:h-[250px] 
+  xl:h-[280px]">
+          <BentoCard
+            src="videos/IOT.mp4"
+            title={
+              <>
+                IOT
+              </>
+            }
+
+          />
+        </BentoTilt>
+
+        <BentoTilt className="bento-tilt_2 md:col-span-1 
+  h-[160px] 
+  sm:h-[190px] 
+  md:h-[220px] 
+  lg:h-[250px] 
+  xl:h-[280px]">
+          <BentoCard
+            src="videos/WEB3-BLOCKCHAIN.mp4"
+            title={
+              <>
+                OPEN INNOVATION
+              </>
+            }
+
+          />
+        </BentoTilt>
+      </div>
     </div>
   </section>
 );
 
-export default About;
+export default Tracks;

@@ -5,82 +5,42 @@ import AnimatedTitle from './AnimatedTitle';
 const teamData = [
   {
     id: 1,
-    name: "Dr. Ramesh Kumar",
-    role: "Faculty Coordinator",
-    vehicleType: "Military Command",
+    name: "Suyash Sahu",
+    role: "Frontend Developer",
+    vehicleType: "Cyber Racer",
     image: "/img/Amongus1.jpeg",
     crewColor: "#FF4655",
-    description: "Leading the academic direction of HackZion V3",
-    task: "Fix Electrical ⚡"
+    description: "Building interactive UI and animations",
+    task: "Fix Wiring ⚡"
   },
   {
     id: 2,
-    name: "Arjun Patel",
-    role: "Student Coordinator",
-    vehicleType: "Neon Racer",
+    name: "Shashank Singh",
+    role: "Backend Developer",
+    vehicleType: "Neon Runner",
     image: "/img/Amongus2.jpeg",
     crewColor: "#00B4D8",
-    description: "Managing event logistics and coordination",
-    task: "Swipe Card 🔑"
+    description: "Handling APIs & server logic",
+    task: "Upload Data 💾"
   },
   {
     id: 3,
-    name: "Sneha Reddy",
-    role: "Student Coordinator",
-    image: "/img/Amongus1.jpeg",
-    vehicleType: "Speed Demon",
-    crewColor: "#C77DFF",
-    description: "Overseeing participant engagement",
-    task: "Empty Chute 🗑️"
-  },
-  {
-    id: 4,
-    name: "Vikram Singh",
-    role: "Frontend Developer",
-    image: "/img/Amongus2.jpeg",
-    vehicleType: "Cyber Bike",
-    crewColor: "#4CC9F0",
-    description: "Crafting the visual interface",
-    task: "Submit Scan 📡"
-  },
-  {
-    id: 5,
-    name: "Ananya Gupta",
-    role: "Backend Developer",
-    image: "/img/Amongus1.jpeg",
-    vehicleType: "Stealth Hover",
-    crewColor: "#F9C74F",
-    description: "Building the core infrastructure",
-    task: "Download Data 💾"
-  },
-  {
-    id: 6,
-    name: "Rohan Mehta",
-    role: "3D Graphics Dev",
-    image: "/img/Amongus2.jpeg",
-    vehicleType: "Quantum Cruiser",
-    crewColor: "#7209B7",
-    description: "Creating immersive 3D experiences",
-    task: "Fix Weather Node 🌐"
-  },
-  {
-    id: 7,
-    name: "Kavya Iyer",
+    name: "Saarthak Singh",
     role: "UI/UX Designer",
+    vehicleType: "Speed Phantom",
     image: "/img/Amongus1.jpeg",
-    vehicleType: "Aero Pod",
-    crewColor: "#F72585",
-    description: "Designing user experiences",
+    crewColor: "#C77DFF",
+    description: "Designing smooth user experience",
     task: "Align Engine 🔧"
   },
   {
-    id: 8,
-    name: "AMC Eng. Club",
-    role: "Our Club",
+    id: 4,
+    name: "Shreevant Singh",
+    role: "Full Stack Developer",
+    vehicleType: "Quantum Cruiser",
     image: "/img/Amongus2.jpeg",
-    vehicleType: "Command Center",
-    crewColor: "#FF9500",
-    description: "Official Technical Club",
+    crewColor: "#4CC9F0",
+    description: "Managing frontend + backend flow",
     task: "Run Diagnostics 🖥️"
   }
 ];
@@ -210,7 +170,7 @@ export default function HackZionTeam() {
   };
 
   return (
-    <div style={{
+    <div id="team" style={{
       minHeight: '100vh',
       width: '100vw',
       background: 'linear-gradient(135deg, #000000 0%, #0a0a0a 40%, #000000 70%, #000000 100%)',

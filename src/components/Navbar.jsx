@@ -10,9 +10,9 @@ const navItems = [
   { name: "Home", id: "home" },
   { name: "About", id: "about-section" },
   { name: "Timeline", id: "timeline" },
-  { name: "Team", id: "hackzion-team" },
   { name: "Rules", id: "rules" },
-  { name: "Sponsors", id: "contact" },
+  { name: "Sponsors", id: "sponsors" },
+  { name: "Team", id: "team" },
 ];
 
 const NavBar = () => {

@@ -2,12 +2,13 @@ import Welcome from "./components/Welcome";
 import Hero from "./components/Hero";
 import NavBar from "./components/Navbar";
 import About from "./components/About";
-import Sponsors from "./components/Sponsors";
-import Footer from "./components/Footer";
-import Tracks from "./components/Timeline";
+import Tracks from "./components/Tracks";
+import Timeline from "./components/Timeline";
 import Prize from "./components/Prize";
 import Rules from "./components/Rules";
+import Sponsors from "./components/Sponsors";
 import HackZionTeam from "./components/HackZionTeam";
+import Footer from "./components/Footer";
 
 
 
@@ -19,6 +20,7 @@ function App() {
       <Welcome />
       <About />
       <Tracks />
+      <Timeline />
       <Prize/>
       <Rules/>
       <Sponsors />

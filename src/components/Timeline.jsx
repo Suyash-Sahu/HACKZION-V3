@@ -190,6 +190,7 @@ const Timeline = () => {
   return (
     <StarsBackground>
       <section
+        id="timeline"
         ref={wrapperRef}
         className="relative text-white overflow-hidden"
       >
