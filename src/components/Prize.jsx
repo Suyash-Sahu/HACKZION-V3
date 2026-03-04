@@ -107,7 +107,7 @@ const Prize = () => {
             <h1 className="font-bauhaus text-6xl sm:text-7xl md:text-8xl lg:text-9xl 
                            text-yellow-300 font-bold drop-shadow-[0_0_30px_rgba(250,204,21,1)] 
                            animate-pulse-slow">
-              ₹1,20,000
+              ₹1,00,000
             </h1>
           </div>
         </div>
