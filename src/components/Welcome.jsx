@@ -8,11 +8,13 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Welcome = () => {
   useGSAP(() => {
+    const isMobile = window.innerWidth < 768;
+
     const clipAnimation = gsap.timeline({
       scrollTrigger: {
         trigger: "#clip",
         start: "center center",
-        end: "+=800 center",
+        end: isMobile ? "+=300 center" : "+=800 center",
         scrub: 0.5,
         pin: true,
         pinSpacing: true,
@@ -28,14 +30,11 @@ const Welcome = () => {
 
   return (
     <div id="about" className="min-h-screen w-screen">
-      <div className="relative mb-8 mt-36 flex flex-col items-center gap-5">
-        
-
+      <div className="relative mb-8 mt-24 md:mt-36 flex flex-col items-center gap-5 px-4">
         <AnimatedTitle
           title="Welcome to the <br /> 24hrs Ultimate Hackathon Showdown"
           containerClass="mt-5 !text-black text-center"
         />
-       
       </div>
 
       <div className="h-dvh w-screen" id="clip">
