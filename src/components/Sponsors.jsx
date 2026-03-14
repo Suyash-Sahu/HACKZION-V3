@@ -1,6 +1,5 @@
 import gsap from "gsap";
 import { useRef, useState } from "react";
-
 import AnimatedTitle from "./AnimatedTitle";
 
 // BentoTilt component
@@ -45,6 +44,7 @@ const Sponsors = () => {
   return (
     <div id="sponsors" className="min-h-dvh w-screen bg-black text-blue-50 py-20">
       <div className="container mx-auto px-4">
+        
         <div className="text-center mb-16">
           <AnimatedTitle
             title="PROUD SPONSORS"
@@ -52,26 +52,24 @@ const Sponsors = () => {
           />
         </div>
 
-        {/* Sponsors Grid - 3 cards with video */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {[1, 2, 3].map((id) => (
-            <BentoTilt 
-              key={id}
-              className="border-hsla relative overflow-hidden rounded-xl transition-transform duration-300 ease-out bg-gradient-to-br from-gray-800/30 to-gray-900/20 border-gray-600/30"
-            >
-              <div className="relative z-10 flex size-full items-center justify-center p-6">
-                <video
-                  src="/videos/banner.mp4"
-                  loop
-                  muted
-                  autoPlay
-                  playsInline
-                  className="w-full h-full object-cover rounded-lg"
-                />
-              </div>
-            </BentoTilt>
-          ))}
+        {/* Single Sponsor Card */}
+        <div className="flex justify-center max-w-3xl mx-auto">
+          <BentoTilt
+            className="border-hsla relative overflow-hidden rounded-xl transition-transform duration-300 ease-out bg-gradient-to-br from-gray-800/30 to-gray-900/20 border-gray-600/30"
+          >
+            <div className="relative z-10 flex size-full items-center justify-center p-6">
+              <video
+                src="/videos/banner1.mp4"
+                loop
+                muted
+                autoPlay
+                playsInline
+                className="w-full h-full object-cover rounded-lg"
+              />
+            </div>
+          </BentoTilt>
         </div>
+
       </div>
     </div>
   );
