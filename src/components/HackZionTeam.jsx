@@ -21,7 +21,7 @@ const teamData = [
     image: "/img/Amongus2.jpeg",
     crewColor: "#00B4D8",
     description: "Handling APIs & server logic",
-    task: "Upload Data 💾"
+    task: "Building Logics 💾"
   },
   {
     id: 3,
