@@ -15,7 +15,7 @@ const teamData = [
   },
   {
     id: 2,
-    name: "Shashank Singh",
+    name: "Aadi Satwik Pandey",
     role: "Backend Developer",
     vehicleType: "Neon Runner",
     image: "/img/Amongus2.jpeg",
@@ -25,7 +25,7 @@ const teamData = [
   },
   {
     id: 3,
-    name: "Saarthak Singh",
+    name: "Tisha",
     role: "UI/UX Designer",
     vehicleType: "Speed Phantom",
     image: "/img/Amongus1.jpeg",
@@ -35,7 +35,7 @@ const teamData = [
   },
   {
     id: 4,
-    name: "Shreevant Singh",
+    name: "G C Trupti",
     role: "Full Stack Developer",
     vehicleType: "Quantum Cruiser",
     image: "/img/Amongus2.jpeg",
