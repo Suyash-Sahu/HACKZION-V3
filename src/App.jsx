@@ -1,3 +1,4 @@
+import { Routes, Route } from "react-router-dom";
 import Welcome from "./components/Welcome";
 import Hero from "./components/Hero";
 import NavBar from "./components/Navbar";
@@ -9,10 +10,9 @@ import Rules from "./components/Rules";
 import Sponsors from "./components/Sponsors";
 import HackZionTeam from "./components/HackZionTeam";
 import Footer from "./components/Footer";
+import Register from "./components/Register";
 
-
-
-function App() {
+function LandingPage() {
   return (
     <main id="home" className="relative min-h-screen w-screen overflow-x-hidden">
       <NavBar />
@@ -21,12 +21,21 @@ function App() {
       <About />
       <Tracks />
       <Timeline />
-      <Prize/>
-      <Rules/>
+      <Prize />
+      <Rules />
       <Sponsors />
       <HackZionTeam />
       <Footer />
     </main>
+  );
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/register" element={<Register />} />
+    </Routes>
   );
 }
 

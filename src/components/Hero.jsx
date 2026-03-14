@@ -2,6 +2,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/all";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import LanguageSequenceTitle from "./LanguageSequenceTitle";
 
@@ -10,6 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 const Hero = () => {
   const [loading, setLoading] = useState(true);
   const videoRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleVideoLoad = () => {
     setLoading(false);
@@ -82,15 +84,14 @@ const Hero = () => {
           </div>
         </div>
 
-        
-        <a  href="https://forms.gle/bcT7WznJWXxTZpXWA"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="special-font hero-heading absolute bottom-5 right-5 z-50 text-blue-75 text-5xl sm:text-5xl cursor-pointer hover:scale-105 transition-transform pointer-events-auto"
+
+        <button
+          onClick={() => navigate("/register")}
+          className="special-font hero-heading absolute bottom-5 right-5 z-50 text-blue-75 text-5xl sm:text-5xl cursor-pointer hover:scale-105 transition-transform pointer-events-auto bg-transparent border-none text-left"
         >
           R<b>E</b>GISTER <br />
           NOW
-        </a>
+        </button>
       </div>
     </div>
   );

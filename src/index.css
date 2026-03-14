@@ -374,3 +374,90 @@ body {
   pointer-events: none;
   filter: drop-shadow(0 0 12px rgba(0,255,255,0.6));
 }
+
+/* Registration page styles */
+.reg-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 1rem;
+  padding: 2rem;
+}
+
+@media (min-width: 640px) {
+  .reg-card {
+    padding: 2.5rem;
+  }
+}
+
+.reg-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  color: #dfdff2;
+  font-family: "General Sans", sans-serif;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.reg-input:focus {
+  border-color: #5724ff;
+  box-shadow: 0 0 0 3px rgba(87, 36, 255, 0.15);
+}
+
+.reg-input::placeholder {
+  color: rgba(223, 223, 242, 0.3);
+}
+
+.reg-input option {
+  background: #0a0a0a;
+  color: #dfdff2;
+}
+
+.reg-btn {
+  padding: 0.75rem 1.5rem;
+  background: #5724ff;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-family: "General Sans", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  text-align: center;
+}
+
+.reg-btn:hover {
+  background: #6b3fff;
+}
+
+.reg-btn:active {
+  transform: scale(0.98);
+}
+
+.reg-btn-outline {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  color: #dfdff2;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.5rem;
+  font-family: "General Sans", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  text-align: center;
+}
+
+.reg-btn-outline:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.04);
+}

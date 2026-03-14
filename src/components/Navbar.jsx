@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { useRef, useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import Button from "./Button";
 
@@ -54,6 +55,9 @@ const NavBar = () => {
 
   const audioElementRef = useRef(null);
   const navContainerRef = useRef(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isOnLanding = location.pathname === "/";
 
   const toggleAudioIndicator = () => {
     setIsAudioPlaying((prev) => !prev);
@@ -113,12 +117,18 @@ const NavBar = () => {
               {navItems.map((item, index) => (
                 <a
                   key={index}
-                  href={`#${item.id}`}
+                  href={isOnLanding ? `#${item.id}` : `/#${item.id}`}
                   className="nav-hover-btn text-white"
                 >
                   {item.name}
                 </a>
               ))}
+              <button
+                onClick={() => navigate("/register")}
+                className="ms-10 px-4 py-1.5 bg-violet-300 text-white text-xs font-general uppercase rounded-full hover:bg-[#6b3fff] transition-colors duration-200 cursor-pointer"
+              >
+                Register
+              </button>
             </div>
 
             {/* Mobile Hamburger Button */}
@@ -178,7 +188,7 @@ const NavBar = () => {
           {navItems.map((item, index) => (
             <a
               key={index}
-              href={`#${item.id}`}
+              href={isOnLanding ? `#${item.id}` : `/#${item.id}`}
               onClick={closeMobileMenu}
               className="text-white text-base font-medium px-4 py-3 rounded-lg hover:bg-gray-800 hover:text-gray-100 transition-colors duration-200"
               style={{
@@ -188,6 +198,15 @@ const NavBar = () => {
               {item.name}
             </a>
           ))}
+          <button
+            onClick={() => { closeMobileMenu(); navigate("/register"); }}
+            className="mx-4 mt-2 px-4 py-3 bg-violet-300 text-white text-sm font-medium uppercase rounded-lg hover:bg-[#6b3fff] transition-colors duration-200 cursor-pointer text-center"
+            style={{
+              transitionDelay: isMobileMenuOpen ? `${navItems.length * 40}ms` : "0ms",
+            }}
+          >
+            Register
+          </button>
         </nav>
       </div>
     </>
