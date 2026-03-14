@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import StarsBackground from "./StarsBackground";
 
 const DOMAINS = ["Cyber Security", "AIML", "IOT", "Open Innovation"];
-const PARTICIPANT_COUNTS = [1, 2, 3, 4];
+const PARTICIPANT_COUNTS = [2, 3, 4];
 
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxYBh0wEEfib4p_Hfd8fulhAQES98T72DqemNoIxW0m9fTxZHmaM-YYElbMb2DFF4_Trw/exec";
 
