@@ -2,7 +2,6 @@ import gsap from "gsap";
 import { useRef, useState } from "react";
 import AnimatedTitle from "./AnimatedTitle";
 
-// BentoTilt component
 export const BentoTilt = ({ children, className = "" }) => {
   const [transformStyle, setTransformStyle] = useState("");
   const itemRef = useRef(null);
@@ -42,8 +41,8 @@ export const BentoTilt = ({ children, className = "" }) => {
 
 const Sponsors = () => {
   return (
-<div id="sponsors" className="w-screen bg-black text-blue-50 py-16 md:py-24">
-        <div className="container mx-auto px-4">
+    <div id="sponsors" className="w-screen bg-black text-blue-50 py-16 md:py-24">
+      <div className="container mx-auto px-4">
 
         <div className="text-center mb-16">
           <AnimatedTitle
@@ -53,23 +52,21 @@ const Sponsors = () => {
         </div>
 
         <div className="flex justify-center mx-auto w-full max-w-6xl">
-  <BentoTilt
-    className="relative overflow-hidden rounded-xl transition-transform duration-300 ease-out 
-    bg-gradient-to-br from-gray-800/30 to-gray-900/20 border border-gray-600/30 
-    w-full h-[260px] sm:h-[320px] md:h-[420px] lg:h-[500px]"
-  >
-    <div className="relative z-10 flex size-full items-center justify-center p-4">
-      <video
-        src="/videos/banner1.mp4"
-        loop
-        muted
-        autoPlay
-        playsInline
-        className="w-full h-full object-contain rounded-lg"
-      />
-    </div>
-  </BentoTilt>
-</div>
+          <BentoTilt
+            className="relative overflow-hidden rounded-xl transition-transform duration-300 ease-out 
+            bg-gradient-to-br from-gray-800/30 to-gray-900/20 border border-gray-600/30 
+            w-full h-[420px] sm:h-[420px] md:h-[420px] lg:h-[500px]"
+          >
+            <video
+              src="/videos/banner1.mp4"
+              loop
+              muted
+              autoPlay
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover rounded-lg"
+            />
+          </BentoTilt>
+        </div>
 
       </div>
     </div>
