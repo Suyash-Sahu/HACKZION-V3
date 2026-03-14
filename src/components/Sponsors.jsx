@@ -42,9 +42,9 @@ export const BentoTilt = ({ children, className = "" }) => {
 
 const Sponsors = () => {
   return (
-    <div id="sponsors" className="min-h-dvh w-screen bg-black text-blue-50 py-20">
-      <div className="container mx-auto px-4">
-        
+<div id="sponsors" className="w-screen bg-black text-blue-50 py-16 md:py-24">
+        <div className="container mx-auto px-4">
+
         <div className="text-center mb-16">
           <AnimatedTitle
             title="PROUD SPONSORS"
@@ -52,23 +52,24 @@ const Sponsors = () => {
           />
         </div>
 
-        {/* Single Sponsor Card */}
-        <div className="flex justify-center max-w-3xl mx-auto">
-          <BentoTilt
-            className="border-hsla relative overflow-hidden rounded-xl transition-transform duration-300 ease-out bg-gradient-to-br from-gray-800/30 to-gray-900/20 border-gray-600/30"
-          >
-            <div className="relative z-10 flex size-full items-center justify-center p-6">
-              <video
-                src="/videos/banner1.mp4"
-                loop
-                muted
-                autoPlay
-                playsInline
-                className="w-full h-full object-cover rounded-lg"
-              />
-            </div>
-          </BentoTilt>
-        </div>
+        <div className="flex justify-center mx-auto w-full max-w-6xl">
+  <BentoTilt
+    className="relative overflow-hidden rounded-xl transition-transform duration-300 ease-out 
+    bg-gradient-to-br from-gray-800/30 to-gray-900/20 border border-gray-600/30 
+    w-full h-[260px] sm:h-[320px] md:h-[420px] lg:h-[500px]"
+  >
+    <div className="relative z-10 flex size-full items-center justify-center p-4">
+      <video
+        src="/videos/banner1.mp4"
+        loop
+        muted
+        autoPlay
+        playsInline
+        className="w-full h-full object-contain rounded-lg"
+      />
+    </div>
+  </BentoTilt>
+</div>
 
       </div>
     </div>
