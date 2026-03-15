@@ -8,6 +8,86 @@ import LanguageSequenceTitle from "./LanguageSequenceTitle";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Countdown component
+const RegistrationCountdown = () => {
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [expired, setExpired] = useState(false);
+
+  useEffect(() => {
+    const target = new Date("2026-03-23T23:59:59");
+
+    const tick = () => {
+      const now = new Date();
+      const diff = target - now;
+
+      if (diff <= 0) {
+        setExpired(true);
+        return;
+      }
+
+      setTimeLeft({
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((diff / (1000 * 60)) % 60),
+        seconds: Math.floor((diff / 1000) % 60),
+      });
+    };
+
+    tick();
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  if (expired) {
+    return (
+      <div className="text-center text-red-400 text-xs font-semibold tracking-widest uppercase mt-1 drop-shadow-lg">
+        Registration Closed
+      </div>
+    );
+  }
+
+  const pad = (n) => String(n).padStart(2, "0");
+
+  return (
+    <div className="flex flex-col items-end gap-1 mt-2 pointer-events-auto">
+      <p className="text-yellow-200 text-[10px] font-bold tracking-[0.2em] uppercase drop-shadow-md">
+        Registration closes in
+      </p>
+
+      <div className="flex gap-2 items-center">
+        {[
+          { label: "D", value: timeLeft.days },
+          { label: "H", value: timeLeft.hours },
+          { label: "M", value: timeLeft.minutes },
+          { label: "S", value: timeLeft.seconds },
+        ].map(({ label, value }, i) => (
+          <div key={label} className="flex items-center gap-1">
+            <div className="flex flex-col items-center">
+
+              {/* Bright countdown numbers */}
+              <span
+                className="text-yellow-300 text-lg font-black tabular-nums leading-none drop-shadow-[0_0_8px_rgba(253,224,71,0.9)]"
+                style={{ fontVariantNumeric: "tabular-nums" }}
+              >
+                {pad(value)}
+              </span>
+
+              {/* Labels */}
+              <span className="text-white text-[8px] font-bold tracking-widest opacity-80">
+                {label}
+              </span>
+            </div>
+
+            {i < 3 && (
+              <span className="text-white text-base font-black opacity-60 -mt-2">:</span>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const Hero = () => {
   const [loading, setLoading] = useState(true);
   const videoRef = useRef(null);
@@ -21,7 +101,7 @@ const Hero = () => {
   };
 
   const handleVideoError = (e) => {
-    console.error('Video loading error:', e);
+    console.error("Video loading error:", e);
     setLoading(false);
   };
 
@@ -30,6 +110,7 @@ const Hero = () => {
       clipPath: "polygon(14% 0, 72% 0, 88% 90%, 0 95%)",
       borderRadius: "0% 0% 40% 10%",
     });
+
     gsap.from("#video-frame", {
       clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
       borderRadius: "0% 0% 0% 0%",
@@ -75,23 +156,28 @@ const Hero = () => {
         <div className="absolute left-0 top-0 z-40 w-full h-full pointer-events-none">
           <div className="flex flex-col items-center justify-center h-full gap-2">
             <LanguageSequenceTitle
-              sequence={['HACKZION', 2500, 'ಹ್ಯಾಕಥಾನ್', 2500, 'हैक्ज़िऔन', 2500]}
+              sequence={["HACKZION", 2500, "ಹ್ಯಾಕಥಾನ್", 2500, "हैक्ज़िऔन", 2500]}
               containerClass="special-font hero-heading text-blue-100 text-7xl sm:text-8xl md:text-9xl lg:text-[11rem] text-center"
             />
+
             <p className="text-blue-100 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black tracking-[0.1em] uppercase opacity-90">
-  .V3
-</p>
+              .V3
+            </p>
           </div>
         </div>
 
+        {/* Register button + countdown */}
+        <div className="absolute bottom-5 right-5 z-50 flex flex-col items-end pointer-events-auto">
+          <button
+            onClick={() => navigate("/register")}
+            className="special-font hero-heading text-blue-75 text-5xl sm:text-5xl cursor-pointer hover:scale-105 transition-transform bg-transparent border-none text-right"
+          >
+            R<b>E</b>GISTER <br />
+            NOW
+          </button>
 
-        <button
-          onClick={() => navigate("/register")}
-          className="special-font hero-heading absolute bottom-5 right-5 z-50 text-blue-75 text-5xl sm:text-5xl cursor-pointer hover:scale-105 transition-transform pointer-events-auto bg-transparent border-none text-left"
-        >
-          R<b>E</b>GISTER <br />
-          NOW
-        </button>
+          <RegistrationCountdown />
+        </div>
       </div>
     </div>
   );
