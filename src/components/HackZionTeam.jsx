@@ -1,61 +1,25 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import AnimatedTitle from './AnimatedTitle';
+import { teamData } from './data/teamData';
 
-// Team data with updated images
-const teamData = [
-  {
-    id: 1,
-    name: "Suyash Sahu",
-    role: "Frontend Developer",
-    vehicleType: "Cyber Racer",
-    image: "/img/Amongus1.jpeg",
-    crewColor: "#FF4655",
-    description: "Building interactive UI and animations",
-    task: "Fix Wiring ⚡"
-  },
-  {
-    id: 2,
-    name: "Aadi Satwik Pandey",
-    role: "Backend Developer",
-    vehicleType: "Neon Runner",
-    image: "/img/Amongus2.jpeg",
-    crewColor: "#00B4D8",
-    description: "Handling APIs & server logic",
-    task: "Building Logics 💾"
-  },
-  {
-    id: 3,
-    name: "Tisha",
-    role: "UI/UX Designer",
-    vehicleType: "Speed Phantom",
-    image: "/img/Amongus1.jpeg",
-    crewColor: "#C77DFF",
-    description: "Designing smooth user experience",
-    task: "Align Engine 🔧"
-  },
-  {
-    id: 4,
-    name: "G C Trupti",
-    role: "Full Stack Developer",
-    vehicleType: "Quantum Cruiser",
-    image: "/img/Amongus2.jpeg",
-    crewColor: "#4CC9F0",
-    description: "Managing frontend + backend flow",
-    task: "Run Diagnostics 🖥️"
-  }
+const teamGroups = [
+  { label: "Student Co-ordinator", color: "#FFD700" },
+  { label: "Tech Team", color: "#FF4655" },
+  { label: "Design Team", color: "#C77DFF" },
+  { label: "Marketing Team", color: "#00B4D8" },
+  { label: "Media Team", color: "#4CC9F0" },
 ];
 
-// Floating images - only background elements
 const floatingImages = [
-  { src: "/img/Amongus-bg-remove-1.png", size: 55, initialX: 5, initialY: 15, delay: 0.5, duration: 6 },
+  { src: "/img/Amongus-bg-remove-1.png", size: 55, initialX: 5,  initialY: 15, delay: 0.5, duration: 6 },
   { src: "/img/Amongus-bg-remove-2.png", size: 40, initialX: 88, initialY: 25, delay: 1.2, duration: 8 },
-  { src: "/img/Amongus-bg-remove-1.png", size: 70, initialX: 3, initialY: 60, delay: 2, duration: 7 },
+  { src: "/img/Amongus-bg-remove-1.png", size: 70, initialX: 3,  initialY: 60, delay: 2,   duration: 7 },
   { src: "/img/Amongus-bg-remove-2.png", size: 45, initialX: 90, initialY: 70, delay: 0.8, duration: 5 },
-  { src: "/img/Amongus-bg-remove-1.png", size: 50, initialX: 15, initialY: 85, delay: 3, duration: 9 },
+  { src: "/img/Amongus-bg-remove-1.png", size: 50, initialX: 15, initialY: 85, delay: 3,   duration: 9 },
   { src: "/img/Amongus-bg-remove-2.png", size: 35, initialX: 80, initialY: 85, delay: 1.5, duration: 6 },
 ];
 
-// Floating image component
+/* ─── Floating crewmate ─────────────────────────────────────── */
 const FloatingImage = ({ src, size, initialX, initialY, delay, duration }) => {
   const [visible, setVisible] = useState(false);
   const [pos, setPos] = useState({ x: initialX, y: initialY });
@@ -64,67 +28,51 @@ const FloatingImage = ({ src, size, initialX, initialY, delay, duration }) => {
   useEffect(() => {
     const showTimer = setTimeout(() => {
       setVisible(true);
-      const interval = setInterval(() => {
-        setPos({
-          x: Math.random() * 80 + 10,
-          y: Math.random() * 70 + 10,
-        });
-        setRotation(prev => prev + (Math.random() * 40 - 20));
+      const move   = setInterval(() => {
+        setPos({ x: Math.random() * 80 + 10, y: Math.random() * 70 + 10 });
+        setRotation(r => r + (Math.random() * 40 - 20));
       }, duration * 1000);
-
-      // Randomly hide/show
-      const toggleInterval = setInterval(() => {
-        setVisible(v => !v);
-      }, (Math.random() * 3000 + 2000));
-
-      return () => {
-        clearInterval(interval);
-        clearInterval(toggleInterval);
-      };
+      const blink  = setInterval(() => setVisible(v => !v), Math.random() * 3000 + 2000);
+      return () => { clearInterval(move); clearInterval(blink); };
     }, delay * 1000);
-
     return () => clearTimeout(showTimer);
   }, []);
 
   return (
-    <div
-      style={{
-        position: 'absolute',
-        left: `${pos.x}%`,
-        top: `${pos.y}%`,
-        transition: `left ${duration}s ease-in-out, top ${duration}s ease-in-out, opacity 1s ease, transform 0.5s ease`,
-        opacity: visible ? 0.85 : 0,
-        transform: `rotate(${rotation}deg)`,
-        pointerEvents: 'none',
-        zIndex: 1,
-        filter: 'drop-shadow(0 0 12px rgba(155, 77, 255, 0.8))',
-      }}
-    >
-      <img 
-        src={src} 
-        alt="Floating element" 
-        style={{ width: size, height: size, objectFit: 'contain' }}
-        onError={(e) => {
-          e.target.style.display = 'none';
-        }}
-      />
+    <div style={{
+      position: 'absolute',
+      left: `${pos.x}%`,
+      top:  `${pos.y}%`,
+      transition: `left ${duration}s ease-in-out, top ${duration}s ease-in-out, opacity 1.2s ease, transform 0.6s ease`,
+      opacity: visible ? 0.7 : 0,
+      transform: `rotate(${rotation}deg)`,
+      pointerEvents: 'none',
+      zIndex: 1,
+      filter: 'drop-shadow(0 0 14px rgba(155,77,255,0.75))',
+    }}>
+      <img src={src} alt="" style={{ width: size, height: size, objectFit: 'contain' }}
+        onError={e => { e.target.style.display = 'none'; }} />
     </div>
   );
 };
 
+/* ─── Main component ────────────────────────────────────────── */
 export default function HackZionTeam() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [prevIndex, setPrevIndex] = useState(null);
-  const [direction, setDirection] = useState(null); // 'left' | 'right'
+  const [prevIndex,   setPrevIndex]   = useState(null);
+  const [direction,   setDirection]   = useState(null);
   const [isAnimating, setIsAnimating] = useState(false);
+  const touchStartX = React.useRef(null);
+
   const [stars] = useState(() =>
-    Array.from({ length: 80 }, (_, i) => ({
+    Array.from({ length: 90 }, (_, i) => ({
       id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 2.5 + 0.5,
-      delay: Math.random() * 4,
+      x:        Math.random() * 100,
+      y:        Math.random() * 100,
+      size:     Math.random() * 2.2 + 0.4,
+      delay:    Math.random() * 5,
       duration: Math.random() * 3 + 2,
+      isPurple: Math.random() > 0.72,
     }))
   );
 
@@ -138,468 +86,518 @@ export default function HackZionTeam() {
       setIsAnimating(false);
       setPrevIndex(null);
       setDirection(null);
-    }, 600);
+    }, 560);
   }, [activeIndex, isAnimating]);
 
   const goNext = () => goTo((activeIndex + 1) % teamData.length, 'left');
   const goPrev = () => goTo((activeIndex - 1 + teamData.length) % teamData.length, 'right');
 
+  const handleTouchStart = e => { touchStartX.current = e.touches[0].clientX; };
+  const handleTouchEnd   = e => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) diff > 0 ? goNext() : goPrev();
+    touchStartX.current = null;
+  };
+
   useEffect(() => {
-    const handleKey = (e) => {
+    const handleKey = e => {
       if (e.key === 'ArrowRight') goNext();
-      if (e.key === 'ArrowLeft') goPrev();
+      if (e.key === 'ArrowLeft')  goPrev();
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
   }, [activeIndex, isAnimating]);
 
-  const member = teamData[activeIndex];
+  const member     = teamData[activeIndex];
   const prevMember = prevIndex !== null ? teamData[prevIndex] : null;
 
   const getSlideStyle = (isCurrent, dir) => {
     if (!isAnimating) return {};
-    if (isCurrent) {
-      return {
-        animation: dir === 'left' ? 'slideInRight 0.55s cubic-bezier(0.4,0,0.2,1) forwards' : 'slideInLeft 0.55s cubic-bezier(0.4,0,0.2,1) forwards',
-      };
-    } else {
-      return {
-        animation: dir === 'left' ? 'slideOutLeft 0.55s cubic-bezier(0.4,0,0.2,1) forwards' : 'slideOutRight 0.55s cubic-bezier(0.4,0,0.2,1) forwards',
-      };
-    }
+    return {
+      animation: isCurrent
+        ? (dir === 'left'  ? 'slideInRight 0.52s cubic-bezier(0.22,1,0.36,1) forwards'
+                           : 'slideInLeft  0.52s cubic-bezier(0.22,1,0.36,1) forwards')
+        : (dir === 'left'  ? 'slideOutLeft  0.52s cubic-bezier(0.22,1,0.36,1) forwards'
+                           : 'slideOutRight 0.52s cubic-bezier(0.22,1,0.36,1) forwards'),
+    };
   };
 
   return (
-    <div id="team" style={{
-      minHeight: '100vh',
-      width: '100vw',
-      background: 'linear-gradient(135deg, #000000 0%, #0a0a0a 40%, #000000 70%, #000000 100%)',
-      color: 'white',
-      overflow: 'hidden',
-      position: 'relative',
-      fontFamily: "'Orbitron', 'Share Tech Mono', monospace",
-    }}>
+    <div
+      id="team"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      style={{
+        minHeight: '100vh',
+        width: '100%',
+        background: 'radial-gradient(ellipse at 20% 50%, #0d0025 0%, #050010 50%, #000000 100%)',
+        color: 'white',
+        overflow: 'hidden',
+        position: 'relative',
+        fontFamily: "'Orbitron', 'Share Tech Mono', monospace",
+        boxSizing: 'border-box',
+      }}
+    >
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&display=swap');
+        *, *::before, *::after { box-sizing: border-box; }
 
+        /* ── Keyframes ── */
         @keyframes twinkle {
-          0%, 100% { opacity: 0.2; transform: scale(1); }
-          50% { opacity: 1; transform: scale(1.4); }
+          0%, 100% { opacity: 0.15; transform: scale(1); }
+          50%       { opacity: 1;    transform: scale(1.5); }
         }
         @keyframes slideInRight {
-          from { transform: translateX(100%); opacity: 0; }
-          to { transform: translateX(0); opacity: 1; }
+          from { transform: translateX(105%) scale(0.96); opacity: 0; }
+          to   { transform: translateX(0)    scale(1);    opacity: 1; }
         }
         @keyframes slideInLeft {
-          from { transform: translateX(-100%); opacity: 0; }
-          to { transform: translateX(0); opacity: 1; }
+          from { transform: translateX(-105%) scale(0.96); opacity: 0; }
+          to   { transform: translateX(0)     scale(1);    opacity: 1; }
         }
         @keyframes slideOutLeft {
-          from { transform: translateX(0); opacity: 1; }
-          to { transform: translateX(-100%); opacity: 0; }
+          from { transform: translateX(0)    scale(1);    opacity: 1; }
+          to   { transform: translateX(-105%) scale(0.96); opacity: 0; }
         }
         @keyframes slideOutRight {
-          from { transform: translateX(0); opacity: 1; }
-          to { transform: translateX(100%); opacity: 0; }
+          from { transform: translateX(0)    scale(1);    opacity: 1; }
+          to   { transform: translateX(105%) scale(0.96); opacity: 0; }
         }
-        @keyframes floatBob {
-          0%, 100% { transform: translateY(0px) rotate(-3deg); }
-          50% { transform: translateY(-18px) rotate(3deg); }
-        }
-        @keyframes pulseGlow {
-          0%, 100% { box-shadow: 0 0 20px rgba(155,77,255,0.4), 0 0 60px rgba(155,77,255,0.15); }
-          50% { box-shadow: 0 0 40px rgba(155,77,255,0.8), 0 0 100px rgba(155,77,255,0.3); }
-        }
-        @keyframes scanline {
-          0% { top: -10%; }
-          100% { top: 110%; }
+        @keyframes cardGlow {
+          0%, 100% { box-shadow: 0 0 0 1px rgba(155,77,255,0.25), 0 8px 40px rgba(155,77,255,0.15), 0 0 80px rgba(155,77,255,0.06); }
+          50%       { box-shadow: 0 0 0 1px rgba(155,77,255,0.55), 0 8px 60px rgba(155,77,255,0.35), 0 0 120px rgba(155,77,255,0.12); }
         }
         @keyframes ventFlicker {
-          0%, 90%, 100% { opacity: 1; }
-          92%, 96% { opacity: 0.3; }
-          94%, 98% { opacity: 0.7; }
+          0%, 88%, 100% { opacity: 1; }
+          91%, 95%      { opacity: 0.25; }
+          93%, 97%      { opacity: 0.65; }
         }
-        @keyframes neonFlicker {
-          0%, 95%, 100% { opacity: 1; }
-          96%, 99% { opacity: 0.6; }
+        @keyframes statusPulse {
+          0%, 100% { transform: scale(1);    opacity: 0.7; }
+          50%       { transform: scale(1.6);  opacity: 1;   }
         }
-        @keyframes dotPulse {
-          0%, 100% { transform: scale(1); opacity: 0.6; }
-          50% { transform: scale(1.5); opacity: 1; }
+        @keyframes linkedinPulse {
+          0%, 100% { box-shadow: 0 0 6px rgba(10,102,194,0.3); }
+          50%       { box-shadow: 0 0 16px rgba(10,102,194,0.7); }
+        }
+        @keyframes scanline {
+          0%   { transform: translateY(-100%); }
+          100% { transform: translateY(100%);  }
+        }
+        @keyframes headerFloat {
+          0%, 100% { transform: translateY(0px); }
+          50%       { transform: translateY(-4px); }
         }
 
-        .card-glow {
-          animation: pulseGlow 3s ease-in-out infinite;
-        }
-        .vent-flicker {
-          animation: ventFlicker 8s ease-in-out infinite;
-        }
-        .neon-flicker {
-          animation: neonFlicker 5s ease-in-out infinite;
-        }
+        /* ── Nav buttons ── */
         .nav-btn {
-          background: rgba(110, 0, 200, 0.25);
-          border: 2px solid rgba(155, 77, 255, 0.5);
+          background: rgba(155,77,255,0.08);
+          border: 1px solid rgba(155,77,255,0.3);
           border-radius: 50%;
-          width: 56px;
-          height: 56px;
+          width: 44px; height: 44px; min-width: 44px;
           cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.3s ease;
-          backdrop-filter: blur(10px);
+          display: flex; align-items: center; justify-content: center;
+          transition: background 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.15s;
+          backdrop-filter: blur(12px);
+          flex-shrink: 0; padding: 0;
         }
-        .nav-btn:hover {
-          background: rgba(155, 77, 255, 0.4);
-          border-color: #c77dff;
-          transform: scale(1.1);
-          box-shadow: 0 0 20px rgba(155,77,255,0.6);
+        @media (min-width: 480px) {
+          .nav-btn { width: 54px; height: 54px; min-width: 54px; }
         }
+        .nav-btn:hover  { background: rgba(155,77,255,0.22); border-color: #c77dff; box-shadow: 0 0 22px rgba(155,77,255,0.5); }
+        .nav-btn:active { transform: scale(0.92); }
+
+        /* ── Task badge ── */
         .task-badge {
-          background: rgba(155, 77, 255, 0.2);
-          border: 1px solid rgba(155, 77, 255, 0.5);
-          border-radius: 20px;
-          padding: 4px 12px;
-          font-size: 11px;
-          letter-spacing: 0.5px;
+          background: rgba(155,77,255,0.12);
+          border: 1px solid rgba(155,77,255,0.35);
+          border-radius: 100px;
+          padding: 3px 10px;
+          font-size: 9px;
+          letter-spacing: 1px;
           color: #c77dff;
           font-family: 'Share Tech Mono', monospace;
+          white-space: nowrap;
+          text-transform: uppercase;
+        }
+
+        /* ── LinkedIn button ── */
+        .linkedin-btn {
+          display: inline-flex; align-items: center; gap: 6px;
+          background: rgba(10,102,194,0.12);
+          border: 1px solid rgba(10,102,194,0.45);
+          border-radius: 100px;
+          padding: 5px 14px;
+          font-size: 10px;
+          color: #7ab8e8;
+          font-family: 'Share Tech Mono', monospace;
+          text-decoration: none;
+          transition: background 0.25s, border-color 0.25s, color 0.25s, box-shadow 0.25s;
+          animation: linkedinPulse 3s ease-in-out infinite;
+          letter-spacing: 1px;
+          cursor: pointer;
+          text-transform: uppercase;
+        }
+        .linkedin-btn:hover, .linkedin-btn:active {
+          background: rgba(10,102,194,0.3);
+          border-color: #7ab8e8;
+          color: #aad4f5;
+          box-shadow: 0 4px 18px rgba(10,102,194,0.45);
+        }
+
+        /* ── Swipe hint ── */
+        .swipe-hint {
+          display: block; text-align: center;
+          font-size: 9px; letter-spacing: 3px;
+          color: rgba(155,77,255,0.3);
+          font-family: 'Share Tech Mono', monospace;
+          padding: 4px 0 8px;
+        }
+        @media (min-width: 480px) { .swipe-hint { display: none; } }
+
+        /* ── Team filter pills ── */
+        .team-pill {
+          padding: 3px 10px;
+          border-radius: 100px;
+          font-size: 8px; letter-spacing: 1px;
+          font-family: 'Share Tech Mono', monospace;
+          white-space: nowrap;
+          transition: background 0.35s, border-color 0.35s, color 0.35s, box-shadow 0.35s;
+          text-transform: uppercase;
+        }
+        @media (min-width: 480px) { .team-pill { font-size: 9px; padding: 4px 13px; } }
+
+        /* ── Dot nav ── */
+        .dot-btn {
+          border: none; cursor: pointer; padding: 0;
+          height: 6px; border-radius: 100px;
+          transition: width 0.35s cubic-bezier(0.22,1,0.36,1),
+                      background 0.35s, box-shadow 0.35s;
+        }
+
+        /* ── Card scanline overlay ── */
+        .scanline-overlay {
+          position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+          border-radius: inherit; opacity: 0.04;
+        }
+        .scanline-overlay::after {
+          content: '';
+          position: absolute; left: 0; right: 0;
+          height: 40%; 
+          background: linear-gradient(transparent, rgba(155,77,255,0.6), transparent);
+          animation: scanline 6s linear infinite;
         }
       `}</style>
 
-      {/* Stars */}
+      {/* ── Stars ── */}
       {stars.map(s => (
-        <div
-          key={s.id}
-          style={{
-            position: 'absolute',
-            left: `${s.x}%`,
-            top: `${s.y}%`,
-            width: s.size,
-            height: s.size,
-            borderRadius: '50%',
-            background: Math.random() > 0.7 ? '#c77dff' : 'white',
-            animation: `twinkle ${s.duration}s ${s.delay}s ease-in-out infinite`,
-            pointerEvents: 'none',
-          }}
-        />
+        <div key={s.id} style={{
+          position: 'absolute',
+          left: `${s.x}%`, top: `${s.y}%`,
+          width: s.size, height: s.size,
+          borderRadius: '50%',
+          background: s.isPurple ? '#c77dff' : '#ffffff',
+          animation: `twinkle ${s.duration}s ${s.delay}s ease-in-out infinite`,
+          pointerEvents: 'none',
+        }} />
       ))}
 
-      {/* Floating Images - Background only */}
-      {floatingImages.map((img, i) => (
-        <FloatingImage key={i} {...img} />
-      ))}
+      {/* ── Floating crewmates ── */}
+      {floatingImages.map((img, i) => <FloatingImage key={i} {...img} />)}
 
-      
-
-      {/* Venting effect */}
+      {/* ── Ambient glows ── */}
       <div className="vent-flicker" style={{
-        position: 'absolute', bottom: 0, left: 0, width: '200px', height: '100px',
-        background: 'radial-gradient(ellipse at bottom left, rgba(155,77,255,0.25) 0%, transparent 70%)',
+        position: 'absolute', bottom: 0, left: 0, width: '300px', height: '200px',
+        background: 'radial-gradient(ellipse at bottom left, rgba(155,77,255,0.18) 0%, transparent 65%)',
         pointerEvents: 'none', zIndex: 1,
       }} />
       <div style={{
-        position: 'absolute', top: 0, right: 0, width: '200px', height: '150px',
-        background: 'radial-gradient(ellipse at top right, rgba(247, 37, 133, 0.15) 0%, transparent 70%)',
+        position: 'absolute', top: 0, right: 0, width: '250px', height: '200px',
+        background: 'radial-gradient(ellipse at top right, rgba(247,37,133,0.12) 0%, transparent 65%)',
+        pointerEvents: 'none', zIndex: 1,
+      }} />
+      <div style={{
+        position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%,-50%)',
+        width: '500px', height: '300px',
+        background: 'radial-gradient(ellipse, rgba(155,77,255,0.04) 0%, transparent 70%)',
         pointerEvents: 'none', zIndex: 1,
       }} />
 
-      {/* Header */}
-      <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', paddingTop: '48px', paddingBottom: '20px' }}>
-        <div style={{
-          display: 'inline-block',
-          fontSize: '11px',
-          letterSpacing: '6px',
-          color: '#9B4DFF',
-          marginBottom: '8px',
-          fontFamily: 'Share Tech Mono, monospace',
-        }}>
-          
-        </div>
+      {/* ── Header ── */}
+      <div style={{
+        position: 'relative', zIndex: 10,
+        textAlign: 'center',
+        paddingTop: '48px', paddingBottom: '8px',
+        animation: 'headerFloat 4s ease-in-out infinite',
+      }}>
         <AnimatedTitle
-        title="AMONG US"
-        containerClass="mb-12 pointer-events-none mix-blend-difference relative z-10"
-      />
-        <div style={{
-          fontSize: '13px',
-          color: 'rgba(199,125,255,0.7)',
-          letterSpacing: '4px',
-          marginTop: '6px',
-          fontFamily: 'Share Tech Mono, monospace',
-        }}>
-        
+          title="AMONG US"
+          containerClass="mb-12 pointer-events-none mix-blend-difference relative z-10"
+        />
+      </div>
+
+      {/* ── Team indicator pills ── */}
+      <div style={{ position: 'relative', zIndex: 10, marginBottom: '18px', padding: '0 12px' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '6px', flexWrap: 'wrap' }}>
+          {teamGroups.map(group => {
+            const isActive = group.label === teamData[activeIndex]?.team;
+            return (
+              <div
+                key={group.label}
+                className="team-pill"
+                style={{
+                  border:      `1px solid ${group.color}${isActive ? 'bb' : '28'}`,
+                  background:  isActive ? `${group.color}18` : 'transparent',
+                  color:       isActive ? group.color : `${group.color}38`,
+                  fontWeight:  isActive ? 700 : 400,
+                  boxShadow:   isActive ? `0 0 12px ${group.color}33` : 'none',
+                }}
+              >
+                {group.label}
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* Main Slider Area */}
+      {/* ── Slider row ── */}
       <div style={{
-        position: 'relative',
-        zIndex: 10,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '24px',
-        padding: '20px 16px',
-        minHeight: '520px',
+        position: 'relative', zIndex: 10,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        gap: '12px', padding: '0 12px',
       }}>
-
-        {/* Prev Button */}
+        {/* ← Prev */}
         <button className="nav-btn" onClick={goPrev} aria-label="Previous">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c77dff" strokeWidth="2.5">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#c77dff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="15 18 9 12 15 6" />
           </svg>
         </button>
 
-        {/* Card Viewport */}
+        {/* Card viewport */}
         <div style={{
           position: 'relative',
-          width: '340px',
-          height: '460px',
+          flex: '1 1 auto', maxWidth: '340px',
+          height: '480px',
           overflow: 'hidden',
-          borderRadius: '24px',
+          borderRadius: '28px',
         }}>
-          {/* Previous card (sliding out) */}
           {prevMember && direction && (
-            <div style={{
-              position: 'absolute', inset: 0,
-              ...getSlideStyle(false, direction),
-            }}>
+            <div style={{ position: 'absolute', inset: 0, ...getSlideStyle(false, direction) }}>
               <MemberCard member={prevMember} isActive={false} />
             </div>
           )}
-          {/* Current card (sliding in) */}
-          <div style={{
-            position: 'absolute', inset: 0,
-            ...getSlideStyle(true, direction),
-          }}>
+          <div style={{ position: 'absolute', inset: 0, ...getSlideStyle(true, direction) }}>
             <MemberCard member={member} isActive={true} />
           </div>
         </div>
 
-        {/* Next Button */}
+        {/* → Next */}
         <button className="nav-btn" onClick={goNext} aria-label="Next">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c77dff" strokeWidth="2.5">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#c77dff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="9 6 15 12 9 18" />
           </svg>
         </button>
       </div>
 
-      {/* Side thumbnails */}
+      {/* ── Swipe hint ── */}
+      <div className="swipe-hint" style={{ marginTop: '10px' }}>← swipe →</div>
+
+      {/* ── Dot indicators ── */}
       <div style={{
         position: 'relative', zIndex: 10,
-        display: 'flex', justifyContent: 'center', gap: '12px',
-        padding: '0 20px 16px',
-        overflowX: 'auto',
+        display: 'flex', justifyContent: 'center', alignItems: 'center',
+        gap: '5px', padding: '14px 20px 40px', flexWrap: 'wrap',
       }}>
         {teamData.map((m, i) => (
           <button
             key={m.id}
+            className="dot-btn"
             onClick={() => goTo(i, i > activeIndex ? 'left' : 'right')}
+            aria-label={m.name}
             style={{
-              width: '52px', height: '52px',
-              borderRadius: '12px',
-              border: i === activeIndex ? `2px solid ${m.crewColor}` : '2px solid rgba(155,77,255,0.2)',
-              background: i === activeIndex ? `${m.crewColor}22` : 'rgba(20,0,40,0.6)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transition: 'all 0.3s',
-              transform: i === activeIndex ? 'scale(1.15)' : 'scale(1)',
-              boxShadow: i === activeIndex ? `0 0 16px ${m.crewColor}88` : 'none',
-              flexShrink: 0,
+              width:      i === activeIndex ? 24 : 6,
+              background: i === activeIndex ? m.crewColor : `${m.crewColor}33`,
+              boxShadow:  i === activeIndex ? `0 0 10px ${m.crewColor}99` : 'none',
             }}
-          >
-            <img 
-              src={m.image} 
-              alt={m.name}
-              style={{ width: 34, height: 34, objectFit: 'cover', borderRadius: '8px' }}
-              onError={(e) => {
-                e.target.style.display = 'none';
-                e.target.nextSibling.style.display = 'flex';
-              }}
-            />
-            <div style={{ display: 'none', fontSize: '10px', color: '#c77dff' }}>
-              ?
-            </div>
-          </button>
+          />
         ))}
-      </div>
-
-      {/* Emergency Meeting Footer */}
-      <div style={{
-        position: 'relative', zIndex: 10,
-        textAlign: 'center',
-        paddingBottom: '24px',
-        color: 'rgba(155,77,255,0.5)',
-        fontSize: '11px',
-        letterSpacing: '3px',
-        fontFamily: 'Share Tech Mono, monospace',
-      }}>
       </div>
     </div>
   );
 }
 
+/* ─── Member card ───────────────────────────────────────────── */
 function MemberCard({ member, isActive }) {
   return (
     <div
-      className={isActive ? 'card-glow' : ''}
       style={{
-        width: '100%',
-        height: '100%',
-        borderRadius: '24px',
-        overflow: 'hidden',
+        width: '100%', height: '100%',
+        borderRadius: '28px', overflow: 'hidden',
         position: 'relative',
-        background: `linear-gradient(160deg, rgba(20,0,45,0.95) 0%, rgba(10,0,25,0.98) 100%)`,
-        border: `2px solid ${member.crewColor}55`,
-        display: 'flex',
-        flexDirection: 'column',
+        background: `linear-gradient(160deg,
+          rgba(18,4,42,0.97) 0%,
+          rgba(8,1,22,0.99)  60%,
+          rgba(4,0,14,1)     100%)`,
+        border: `1px solid ${member.crewColor}40`,
+        display: 'flex', flexDirection: 'column',
+        animation: isActive ? 'cardGlow 3.5s ease-in-out infinite' : 'none',
+        transition: 'border-color 0.4s',
       }}
     >
-      {/* Top color strip */}
+      {/* ── Scanline overlay ── */}
+      <div className="scanline-overlay" />
+
+      {/* ── Top accent bar ── */}
       <div style={{
-        height: '5px',
-        background: `linear-gradient(90deg, transparent, ${member.crewColor}, transparent)`,
+        height: '3px',
+        background: `linear-gradient(90deg, transparent 0%, ${member.crewColor} 40%, ${member.crewColor} 60%, transparent 100%)`,
         flexShrink: 0,
+        opacity: 0.9,
       }} />
 
-      {/* Role on top */}
+      {/* ── Team label + status dot ── */}
       <div style={{
-        padding: '14px 16px 8px',
+        padding: '13px 16px 10px',
         flexShrink: 0,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
       }}>
         <div style={{
-          background: `${member.crewColor}22`,
-          border: `1px solid ${member.crewColor}55`,
-          borderRadius: '20px',
-          padding: '4px 14px',
-          fontSize: '11px',
-          letterSpacing: '1px',
+          background: `${member.crewColor}16`,
+          border:     `1px solid ${member.crewColor}45`,
+          borderRadius: '100px',
+          padding: '4px 13px',
+          fontSize: '9px', letterSpacing: '1.2px',
           color: member.crewColor,
           fontFamily: 'Share Tech Mono, monospace',
-          fontWeight: 600,
-          textTransform: 'uppercase',
+          fontWeight: 600, textTransform: 'uppercase',
         }}>
-          {member.role}
+          {member.team}
         </div>
-        <div style={{
-          width: '10px', height: '10px',
-          borderRadius: '50%',
-          background: member.crewColor,
-          boxShadow: `0 0 10px ${member.crewColor}`,
-          animation: 'dotPulse 2s ease-in-out infinite',
-        }} />
+
+        {/* Status cluster */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span style={{
+            fontSize: '8px', letterSpacing: '1px',
+            color: `${member.crewColor}80`,
+            fontFamily: 'Share Tech Mono, monospace',
+            textTransform: 'uppercase',
+          }}>
+            Active
+          </span>
+          <div style={{
+            width: '8px', height: '8px', borderRadius: '50%',
+            background: member.crewColor,
+            boxShadow: `0 0 8px ${member.crewColor}cc`,
+            animation: 'statusPulse 2.2s ease-in-out infinite',
+            flexShrink: 0,
+          }} />
+        </div>
       </div>
 
-      {/* Image area - center */}
+      {/* ── Photo ── */}
       <div style={{
-        flex: 1,
-        position: 'relative',
-        margin: '0 16px',
-        borderRadius: '16px',
-        overflow: 'hidden',
-        background: `radial-gradient(ellipse at center, ${member.crewColor}18 0%, rgba(0,0,0,0.5) 100%)`,
-        border: `1px solid ${member.crewColor}33`,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        flex: 1, position: 'relative',
+        margin: '0 14px',
+        borderRadius: '18px', overflow: 'hidden',
+        background: `radial-gradient(ellipse at 50% 30%, ${member.crewColor}20 0%, rgba(0,0,0,0.6) 100%)`,
+        border: `1px solid ${member.crewColor}28`,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        minHeight: 0,
       }}>
         <img
           src={member.image}
           alt={member.name}
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            opacity: 0.85,
-          }}
-          onError={(e) => {
+          style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.88 }}
+          onError={e => {
             e.target.style.display = 'none';
-            e.target.nextSibling.style.display = 'flex';
+            if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
           }}
         />
 
-        {/* Fallback placeholder */}
+        {/* Fallback avatar */}
         <div style={{
-          display: 'none',
-          width: '100%',
-          height: '100%',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          gap: '12px',
+          display: 'none', width: '100%', height: '100%',
+          alignItems: 'center', justifyContent: 'center',
+          flexDirection: 'column', gap: '14px',
         }}>
-          <div style={{ 
-            width: 80, 
-            height: 80, 
-            background: member.crewColor,
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '32px',
-            color: 'white'
+          <div style={{
+            width: 72, height: 72, background: `${member.crewColor}33`,
+            border: `2px solid ${member.crewColor}66`,
+            borderRadius: '50%', display: 'flex', alignItems: 'center',
+            justifyContent: 'center', fontSize: '26px', color: member.crewColor,
+            fontFamily: 'Orbitron, monospace', fontWeight: 700,
           }}>
             {member.name.charAt(0)}
           </div>
-          <div style={{ fontSize: '12px', color: `${member.crewColor}aa`, letterSpacing: '2px' }}>
-            MEMBER #{member.id}
+          <div style={{
+            fontSize: '10px', color: `${member.crewColor}88`,
+            letterSpacing: '2px', fontFamily: 'Share Tech Mono, monospace',
+          }}>
+            CREW #{String(member.id).padStart(3,'0')}
           </div>
         </div>
 
-        {/* Grid overlay */}
+        {/* Subtle grid overlay */}
         <div style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: `linear-gradient(${member.crewColor}10 1px, transparent 1px), linear-gradient(90deg, ${member.crewColor}10 1px, transparent 1px)`,
-          backgroundSize: '30px 30px',
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          backgroundImage:  `linear-gradient(${member.crewColor}0c 1px, transparent 1px),
+                             linear-gradient(90deg, ${member.crewColor}0c 1px, transparent 1px)`,
+          backgroundSize: '28px 28px',
+        }} />
+
+        {/* Corner accent */}
+        <div style={{
+          position: 'absolute', top: 0, right: 0,
+          width: '50px', height: '50px',
+          background: `radial-gradient(ellipse at top right, ${member.crewColor}30 0%, transparent 70%)`,
           pointerEvents: 'none',
         }} />
 
-        {/* Bottom gradient */}
+        {/* Bottom fade */}
         <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '60px',
-          background: 'linear-gradient(transparent, rgba(10,0,25,0.9))',
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '70px',
+          background: 'linear-gradient(transparent, rgba(8,1,22,0.95))',
           pointerEvents: 'none',
         }} />
       </div>
 
-      {/* Name at bottom */}
-      <div style={{
-        padding: '12px 16px 14px',
-        flexShrink: 0,
-      }}>
+      {/* ── Name + task + LinkedIn ── */}
+      <div style={{ padding: '12px 16px 10px', flexShrink: 0 }}>
+        {/* Name */}
         <h3 style={{
-          margin: '0 0 4px',
-          fontSize: '18px',
-          fontWeight: 700,
-          letterSpacing: '2px',
-          color: 'white',
-          textShadow: `0 0 20px ${member.crewColor}88`,
+          margin: '0 0 8px', padding: 0,
+          fontSize: '15px', fontWeight: 700, letterSpacing: '2px',
+          color: '#ffffff',
+          textShadow: `0 0 24px ${member.crewColor}88, 0 0 6px ${member.crewColor}44`,
           fontFamily: 'Orbitron, monospace',
+          whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
         }}>
           {member.name}
         </h3>
+
+        {/* Task badge + LinkedIn */}
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
-          <span className="task-badge">TASK: {member.task}</span>
-          <span style={{
-            fontSize: '11px',
-            color: 'rgba(155,77,255,0.6)',
-            fontFamily: 'Share Tech Mono, monospace',
-          }}>
-            {member.description}
-          </span>
+          <span className="task-badge">⬡ {member.task}</span>
+
+          <a
+            href={member.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="linkedin-btn"
+          >
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="#7ab8e8">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+            LinkedIn
+          </a>
         </div>
       </div>
 
-      {/* Bottom strip */}
+      {/* ── Bottom accent bar ── */}
       <div style={{
-        height: '4px',
-        background: `linear-gradient(90deg, transparent, ${member.crewColor}, transparent)`,
+        height: '3px', marginTop: 'auto',
+        background: `linear-gradient(90deg, transparent, ${member.crewColor}70, ${member.crewColor}, ${member.crewColor}70, transparent)`,
         flexShrink: 0,
       }} />
     </div>
