@@ -35,7 +35,7 @@ const CARDS = [
     number: "03",
     icon: "📋",
     title: "Shortlist Announced",
-    date: "2st April",
+    date: "2nd April",
     desc: "Selected teams revealed. Check if you made the cut!",
     colorA: "#34d399",
     colorB: "#059669",
