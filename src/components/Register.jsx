@@ -6,7 +6,7 @@ import StarsBackground from "./StarsBackground";
 const DOMAINS = ["Cyber Security", "AIML", "IOT", "Open Innovation"];
 const PARTICIPANT_COUNTS = [2, 3, 4];
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8dCbfXTL3bKmvotZhb__cCFnYf9sMQOVF0mRMAxdFweXTNfKrEkB_YwISEueGlYbq/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzojJXwUexZRER3r-n6Nz-ukCE2uSqyw7Ngyu-encOZTq3NnF89K2xIuHS2resJBlGa/exec";
 
 const stepVariants = {
   enter: { opacity: 0, x: 60 },
