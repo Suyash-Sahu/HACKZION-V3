@@ -6,7 +6,7 @@ import StarsBackground from "./StarsBackground";
 const DOMAINS = ["Cyber Security", "AIML", "IOT", "Open Innovation"];
 const PARTICIPANT_COUNTS = [2, 3, 4];
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxYBh0wEEfib4p_Hfd8fulhAQES98T72DqemNoIxW0m9fTxZHmaM-YYElbMb2DFF4_Trw/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8dCbfXTL3bKmvotZhb__cCFnYf9sMQOVF0mRMAxdFweXTNfKrEkB_YwISEueGlYbq/exec";
 
 const stepVariants = {
   enter: { opacity: 0, x: 60 },
@@ -125,7 +125,7 @@ const StepTeamMembers = ({ formData, errors, updateMember }) => (
   </>
 );
 
-const StepPPTReview = ({ formData, errors, updateField, submitStatus }) => (
+const StepPPTReview = ({ formData, errors, updateField, submitStatus, submitError }) => (
   <>
     <h3 className="font-zentry text-2xl sm:text-3xl font-black text-blue-75 uppercase mb-6">
       PPT & Review
@@ -140,6 +140,20 @@ const StepPPTReview = ({ formData, errors, updateField, submitStatus }) => (
     <p className="text-blue-50/50 text-xs font-general mb-6">
       Upload your PPT to Google Drive or Dropbox and paste the shareable link above.
     </p>
+    <FormInput
+      label="Team Lead GitHub Link"
+      value={formData.teamLeadGithub}
+      onChange={(v) => updateField("teamLeadGithub", v)}
+      placeholder="https://github.com/username"
+      error={errors.teamLeadGithub}
+    />
+    <FormInput
+      label="Best Project GitHub Link"
+      value={formData.bestProjectGithub}
+      onChange={(v) => updateField("bestProjectGithub", v)}
+      placeholder="https://github.com/username/project"
+      error={errors.bestProjectGithub}
+    />
 
     {/* Review Summary */}
     <div className="mt-6 p-4 rounded-xl border border-white/10 bg-white/[0.02]">
@@ -160,10 +174,12 @@ const StepPPTReview = ({ formData, errors, updateField, submitStatus }) => (
       </div>
     </div>
 
-    {submitStatus === "error" && (
-      <p className="text-red-400 text-sm font-general mt-4 text-center">
-        Submission failed. Please try again.
-      </p>
+    {submitStatus === "error" && submitError && (
+      <div className="mt-4 p-3 rounded-lg border border-red-500/30 bg-red-500/10">
+        <p className="text-red-400 text-sm font-general text-center">
+          {submitError}
+        </p>
+      </div>
     )}
   </>
 );
@@ -175,6 +191,7 @@ const Register = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [submitError, setSubmitError] = useState("");
   const formRef = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -182,6 +199,8 @@ const Register = () => {
     domain: "",
     participantCount: "",
     pptLink: "",
+    teamLeadGithub: "",
+    bestProjectGithub: "",
     teamLead: {
       name: "",
       college: "",
@@ -275,6 +294,8 @@ const Register = () => {
 
     if (step === 3) {
       if (!formData.pptLink.trim()) newErrors.pptLink = "PPT link is required";
+      if (!formData.teamLeadGithub.trim()) newErrors.teamLeadGithub = "Team lead GitHub link is required";
+      if (!formData.bestProjectGithub.trim()) newErrors.bestProjectGithub = "Best project GitHub link is required";
     }
 
     setErrors(newErrors);
@@ -316,12 +337,15 @@ const Register = () => {
 
     setIsSubmitting(true);
     setSubmitStatus(null);
+    setSubmitError("");
 
     const payload = {
       teamName: formData.teamName,
       domain: formData.domain,
       participantCount: formData.participantCount,
       pptLink: formData.pptLink,
+      teamLeadGithub: formData.teamLeadGithub,
+      bestProjectGithub: formData.bestProjectGithub,
       teamLeadName: formData.teamLead.name,
       teamLeadCollege: formData.teamLead.college,
       teamLeadUSN: formData.teamLead.usn,
@@ -339,12 +363,18 @@ const Register = () => {
       const result = await response.json();
       if (result.status === "success") {
         setSubmitStatus("success");
+      } else if (result.duplicateUSNs) {
+        console.error("Duplicate USNs:", result.duplicateUSNs);
+        setSubmitError(`USN(s) already registered: ${result.duplicateUSNs.join(", ")}`);
+        setSubmitStatus("error");
       } else {
         console.error("Submission failed:", result.message);
+        setSubmitError("Submission failed. Please try again.");
         setSubmitStatus("error");
       }
     } catch (err) {
       console.error("Submission error:", err);
+      setSubmitError("Submission failed. Please try again.");
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -425,7 +455,7 @@ const Register = () => {
     if (logicalStep === 0) return <StepTeamInfo formData={formData} errors={errors} updateField={updateField} />;
     if (logicalStep === 1) return <StepTeamLead formData={formData} errors={errors} updateTeamLead={updateTeamLead} />;
     if (logicalStep === 2) return <StepTeamMembers formData={formData} errors={errors} updateMember={updateMember} />;
-    if (logicalStep === 3) return <StepPPTReview formData={formData} errors={errors} updateField={updateField} submitStatus={submitStatus} />;
+    if (logicalStep === 3) return <StepPPTReview formData={formData} errors={errors} updateField={updateField} submitStatus={submitStatus} submitError={submitError} />;
   };
 
   return (
@@ -439,12 +469,21 @@ const Register = () => {
           >
             <span>&larr;</span> Back to Home
           </button>
-          <h1 className="font-zentry text-4xl sm:text-5xl md:text-6xl font-black text-blue-75 uppercase">
-            Register
-          </h1>
-          <p className="text-blue-50/50 font-general text-sm mt-2">
-            Join HACKZION V3 — fill in your team details below.
-          </p>
+          <div className="flex items-center gap-4">
+            <img
+              src="/img/hackzion logo.png"
+              alt="Hackzion Logo"
+              className="w-16 h-16 sm:w-20 sm:h-20 object-contain"
+            />
+            <div>
+              <h1 className="font-zentry text-4xl sm:text-5xl md:text-6xl font-black text-blue-75 uppercase">
+                Register
+              </h1>
+              <p className="text-blue-50/50 font-general text-sm mt-2">
+                Join HACKZION V3 — fill in your team details below.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Form Card */}
