@@ -14,29 +14,29 @@ const RegistrationCountdown = () => {
   const [expired, setExpired] = useState(false);
 
   useEffect(() => {
-    const target = new Date("2026-03-23T23:59:59");
+  const target = new Date("2026-03-30T23:59:59");
 
-    const tick = () => {
-      const now = new Date();
-      const diff = target - now;
+  const tick = () => {
+    const now = new Date();
+    const diff = target - now;
 
-      if (diff <= 0) {
-        setExpired(true);
-        return;
-      }
+    if (diff <= 0) {
+      setExpired(true);
+      return;
+    }
 
-      setTimeLeft({
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((diff / (1000 * 60)) % 60),
-        seconds: Math.floor((diff / 1000) % 60),
-      });
-    };
+    setTimeLeft({
+      days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((diff / (1000 * 60)) % 60),
+      seconds: Math.floor((diff / 1000) % 60),
+    });
+  };
 
-    tick();
-    const interval = setInterval(tick, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  tick();
+  const interval = setInterval(tick, 1000);
+  return () => clearInterval(interval);
+}, []);
 
   if (expired) {
     return (
@@ -156,7 +156,7 @@ const Hero = () => {
         <div className="absolute left-0 top-0 z-40 w-full h-full pointer-events-none">
           <div className="flex flex-col items-center justify-center h-full gap-2">
             <LanguageSequenceTitle
-              sequence={["HACKZION", 2500, "ಹ್ಯಾಕಥಾನ್", 2500, "हैक्ज़िऔन", 2500]}
+              sequence={["HACKZION", 2500, "ಹ್ಯಾಕ್ಜಿಯನ್", 2500, "हैक्ज़िऔन", 2500]}
               containerClass="special-font hero-heading text-blue-100 text-7xl sm:text-8xl md:text-9xl lg:text-[11rem] text-center"
             />
 
