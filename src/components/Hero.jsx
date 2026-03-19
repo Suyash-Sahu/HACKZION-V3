@@ -177,6 +177,32 @@ const Hero = () => {
           </button>
 
           <RegistrationCountdown />
+          
+          {/* Brochure Download Button */}
+          <a
+            href="/pdf/brochure.pdf"
+  download="HackZion-V3-Brochure"
+  className="mt-3 flex items-center gap-2 px-4 py-2 bg-yellow-300/90 border border-yellow-200 rounded-lg hover:bg-yellow-400 transition-all duration-200 cursor-pointer group"
+>
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="text-gray-900 group-hover:scale-110 transition-transform"
+  >
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+    <polyline points="7 10 12 15 17 10" />
+    <line x1="12" y1="15" x2="12" y2="3" />
+  </svg>
+  <span className="text-gray-900 text-xs font-general uppercase tracking-wider font-bold">
+    Download Brochure
+  </span>
+</a>
         </div>
       </div>
     </div>

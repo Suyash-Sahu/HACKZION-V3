@@ -11,6 +11,7 @@ const navItems = [
   { name: "Rules", id: "rules" },
   { name: "Sponsors", id: "sponsors" },
   { name: "Team", id: "team" },
+ 
 ];
 
 // Hamburger Icon SVG
@@ -123,6 +124,13 @@ const NavBar = () => {
                   {item.name}
                 </a>
               ))}
+              <a
+                href="/pdf/brochure.pdf"
+                download="HackZion-V3-Brochure"
+                className="nav-hover-btn text-white"
+              >
+                Brochure
+              </a>
               <button
                 onClick={() => navigate("/register")}
                 className="ms-10 px-4 py-1.5 bg-violet-300 text-white text-xs font-general uppercase rounded-full hover:bg-[#6b3fff] transition-colors duration-200 cursor-pointer"
@@ -207,6 +215,17 @@ const NavBar = () => {
           >
             Register
           </button>
+          <a
+            href="/pdf/brochure.pdf"
+            download="HackZion-V3-Brochure"
+            onClick={closeMobileMenu}
+            className="mx-4 mt-2 px-4 py-3 bg-violet-300 border border-violet-300/50 text-white text-sm font-medium uppercase rounded-lg hover:bg-[#6b3fff] transition-colors duration-200 cursor-pointer text-center"
+            style={{
+              transitionDelay: isMobileMenuOpen ? `${(navItems.length + 1) * 40}ms` : "0ms",
+            }}
+          >
+            Brochure
+          </a>
         </nav>
       </div>
     </>

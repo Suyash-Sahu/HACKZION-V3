@@ -534,6 +534,59 @@ const Register = () => {
               </button>
             )}
           </div>
+          
+          {/* Brochure reminder */}
+          {isLastStep && (
+            <div className="mt-6 p-4 rounded-xl border border-violet-300/30 bg-violet-300/10">
+              <div className="flex items-start gap-3">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-violet-300 flex-shrink-0 mt-0.5"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="16" x2="12" y2="12" />
+                  <line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+                <div className="flex-1">
+                  <p className="text-violet-300 text-sm font-general font-bold uppercase tracking-wider mb-2">
+                    Read the Brochure Before Submitting
+                  </p>
+                  <p className="text-blue-50/70 text-xs font-general mb-3">
+                    Please download and read the brochure carefully to understand all the details about HACKZION V3 before submitting your registration.
+                  </p>
+                  <a
+                    href="/pdf/brochure.pdf"
+                    download="HackZion-V3-Brochure"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-violet-300/20 border border-violet-300/50 rounded-lg hover:bg-violet-300/30 transition-all duration-200 cursor-pointer group text-violet-300 text-xs font-general uppercase tracking-wider font-bold"
+                  >
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="group-hover:scale-110 transition-transform"
+                    >
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="7 10 12 15 17 10" />
+                      <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    Download Brochure
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </StarsBackground>
