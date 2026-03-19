@@ -1,7 +1,6 @@
 import gsap from "gsap";
 import { useRef } from "react";
 
-import Button from "./Button";
 import AnimatedTitle from "./AnimatedTitle";
 
 const Rules = () => {
@@ -47,59 +46,77 @@ const Rules = () => {
 
   const rules = [
     {
-      title: "Team Formation",
+      title: "Preliminary Round Overview",
       content: [
-        "Each team must consist of 2–4 members.",
-        "Participants can be part of only one team.",
-        "Cross-college teams are not allowed."
+        "This is an online submission round and the first stage of HackZion V3.",
+        "Teams must analyze a problem and present a structured solution approach.",
+        "Focus is on understanding, design, and planning — not full product development."
+      ]
+    },
+    {
+      title: "Domains",
+      content: [
+        "Cybersecurity",
+        "Artificial Intelligence / Machine Learning",
+        "Internet of Things (IoT)",
+        "Open Innovation"
+      ]
+    },
+    {
+      title: "Submission Requirements",
+      content: [
+        "Teams must create their own domain-based problem statement.",
+        "Submit a 5-slide presentation explaining the solution.",
+        "Presentation should be clear, structured, and concise."
+      ]
+    },
+    {
+      title: "Slide Structure",
+      content: [
+        "Slide 1: Problem Understanding",
+        "Slide 2: Proposed Solution",
+        "Slide 3: System Design / Architecture",
+        "Slide 4: Technology Stack",
+        "Slide 5: Execution & Scalability",
+        "Order of slides can be adjusted if needed."
+      ]
+    },
+    {
+      title: "Evaluation Criteria",
+      content: [
+        "Clarity of problem understanding",
+        "Effectiveness of the proposed solution",
+        "Structure of system design",
+        "Relevance of the technology stack"
+      ]
+    },
+    {
+      title: "Additional Consideration",
+      content: [
+        "Teams must submit a GitHub link of their best project.",
+        "Used as a tie-breaker to assess technical capability."
+      ]
+    },
+    {
+      title: "Final Round Selection",
+      content: [
+        "Top teams from each domain will be shortlisted.",
+        "Selected teams will participate in a 24-hour on-site hackathon."
+      ]
+    },
+    {
+      title: "Final Round Overview",
+      content: [
+        "Problem statements will be given at the event.",
+        "Teams will choose one problem to solve.",
+        "A working prototype must be built within 24 hours.",
+        "Final presentation will be evaluated by judges."
       ]
     },
     {
       title: "Registration",
       content: [
-        "All participants must complete registration before the deadline.",
-        "Valid college ID is mandatory during check-in.",
-        "No spot registrations."
-      ]
-    },
-    {
-      title: "Code of Conduct",
-      content: [
-        "Maintain professional and respectful behavior at all times.",
-        "Any form of harassment, discrimination, or misconduct will lead to immediate disqualification.",
-        "Follow venue rules and organizer instructions strictly."
-      ]
-    },
-    {
-      title: "Project Guidelines",
-      content: [
-        "Projects must be developed during the hackathon duration only.",
-        "Plagiarism or use of fully pre-developed projects will result in disqualification."
-      ]
-    },
-    {
-      title: "Submission Rules",
-      content: [
-        "All teams must submit:",
-        "• Source code (via GitHub)",
-        "• PPT/demo presentation",
-        "• Project description document",
-        "Late submissions will not be accepted."
-      ]
-    },
-    {
-      title: "Disqualification",
-      content: [
-        "Any violation of rules",
-        "Use of unfair means",
-        "Misbehavior or damage to property"
-      ]
-    },
-    {
-      title: "General Guidelines",
-      content: [
-        "Participants must carry their own laptops and chargers.",
-        "The decision of judges will be final and binding."
+        "Registration fee: Rs. 1000"
       ]
     }
   ];
@@ -110,7 +127,7 @@ const Rules = () => {
         
         <div className="relative size-full">
           <AnimatedTitle
-            title="RULES & REGULATIONS"
+            title="RULES & GUIDELINES"
             containerClass="mb-12 pointer-events-none mix-blend-difference relative z-10"
           />
           
@@ -126,18 +143,21 @@ const Rules = () => {
                   onMouseEnter={index === 0 ? handleMouseLeave : undefined}
                   className="bg-gray-900/50 backdrop-blur-sm border border-white/10 rounded-xl p-6 hover:border-white/30 transition-all duration-300"
                 >
-                  <h3 className="text-xl font-bold text-yellow-400 mb-3">{rule.title}</h3>
+                  <h3 className="text-xl font-bold text-yellow-400 mb-3">
+                    {rule.title}
+                  </h3>
                   <ul className="space-y-2">
                     {rule.content.map((item, idx) => (
-                      <li key={idx} className="text-blue-50 text-sm md:text-base">{item}</li>
+                      <li key={idx} className="text-blue-50 text-sm md:text-base">
+                        {item}
+                      </li>
                     ))}
                   </ul>
                 </div>
               ))}
             </div>
-            
-            
           </div>
+
         </div>
       </div>
     </div>
