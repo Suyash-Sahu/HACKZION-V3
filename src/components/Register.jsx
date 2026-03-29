@@ -138,8 +138,12 @@ const StepPPTReview = ({ formData, errors, updateField, submitStatus, submitErro
       error={errors.pptLink}
     />
     <p className="text-blue-50/50 text-xs font-general mb-6">
-      Upload your PPT to Google Drive or Dropbox and paste the shareable link above.
-    </p>
+  Upload your PPT to Google Drive or Dropbox and paste the shareable link above. 
+  <br />
+  <span className="text-violet-300">
+    Please ensure that the link access is set to "Anyone with the link can view" before submission.
+  </span>
+</p>
     <FormInput
       label="Team Lead GitHub Link"
       value={formData.teamLeadGithub}
@@ -403,6 +407,49 @@ const Register = () => {
               Your team <span className="text-violet-300 font-bold">{formData.teamName}</span> has been
               successfully registered for HACKZION V3. We'll send a confirmation to{" "}
               <span className="text-violet-300">{formData.teamLead.email}</span>.
+              <div className="mt-4 mb-6">
+  <p className="text-blue-50/60 text-xs font-general mb-3">
+    Follow our Instagram pages to stay updated
+  </p>
+
+  <div className="flex justify-center gap-4">
+    <a
+      href="https://www.instagram.com/club_omnitrix?igsh=MXMzOXExOG0xNWxmeA=="
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center gap-2 px-4 py-2 border border-white/20 rounded-lg hover:bg-white/10 transition"
+    >
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        className="text-pink-400"
+      >
+        <path d="M7.75 2h8.5C19.99 2 22 4.01 22 7.75v8.5C22 19.99 19.99 22 16.25 22h-8.5C4.01 22 2 19.99 2 16.25v-8.5C2 4.01 4.01 2 7.75 2zm0 2A3.75 3.75 0 004 7.75v8.5A3.75 3.75 0 007.75 20h8.5A3.75 3.75 0 0020 16.25v-8.5A3.75 3.75 0 0016.25 4h-8.5zm4.25 3a5 5 0 110 10 5 5 0 010-10zm0 2a3 3 0 100 6 3 3 0 000-6zm4.75-.88a1.12 1.12 0 110 2.24 1.12 1.12 0 010-2.24z"/>
+      </svg>
+      <span className="text-xs font-general">CLUB_OMNITRIX</span>
+    </a>
+
+    <a
+      href="https://www.instagram.com/acsess_amcec?igsh=MXYwamdqOHNudzh5Mg=="
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center gap-2 px-4 py-2 border border-white/20 rounded-lg hover:bg-white/10 transition"
+    >
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        className="text-pink-400"
+      >
+        <path d="M7.75 2h8.5C19.99 2 22 4.01 22 7.75v8.5C22 19.99 19.99 22 16.25 22h-8.5C4.01 22 2 19.99 2 16.25v-8.5C2 4.01 4.01 2 7.75 2zm0 2A3.75 3.75 0 004 7.75v8.5A3.75 3.75 0 007.75 20h8.5A3.75 3.75 0 0020 16.25v-8.5A3.75 3.75 0 0016.25 4h-8.5zm4.25 3a5 5 0 110 10 5 5 0 010-10zm0 2a3 3 0 100 6 3 3 0 000-6zm4.75-.88a1.12 1.12 0 110 2.24 1.12 1.12 0 010-2.24z"/>
+      </svg>
+      <span className="text-xs font-general">ACSESS_AMCEC</span>
+    </a>
+  </div>
+</div>
             </p>
             <button onClick={() => navigate("/")} className="reg-btn w-full">
               Back to Home
