@@ -14,7 +14,7 @@ const RegistrationCountdown = () => {
   const [expired, setExpired] = useState(false);
 
   useEffect(() => {
-  const target = new Date("2026-03-30T23:59:59");
+  const target = new Date("2026-04-02T23:59:59");
 
   const tick = () => {
     const now = new Date();
