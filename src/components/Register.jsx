@@ -388,7 +388,33 @@ const Register = () => {
   const isLastStep = currentStep === totalSteps - 1;
   const logicalStep = getLogicalStep(currentStep);
 
+  // Registration closed screen
+  return (
+    <StarsBackground>
+      <div className="min-h-screen flex-center flex-col px-4">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="reg-card text-center max-w-md w-full"
+        >
+          <div className="text-6xl mb-4">&#x1F512;</div>
+          <h2 className="font-zentry text-3xl sm:text-4xl font-black text-red-400 uppercase mb-4">
+            Registration Closed
+          </h2>
+          <p className="text-blue-50/70 font-general text-sm mb-6">
+            Registrations for HACKZION V3 are now closed. Thank you for your interest! See you at HACKZION V4.
+          </p>
+          <button onClick={() => navigate("/")} className="reg-btn w-full">
+            Back to Home
+          </button>
+        </motion.div>
+      </div>
+    </StarsBackground>
+  );
+
   // Success screen
+  // eslint-disable-next-line no-unreachable
   if (submitStatus === "success") {
     return (
       <StarsBackground>
