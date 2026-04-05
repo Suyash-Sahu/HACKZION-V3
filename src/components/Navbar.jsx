@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { useRef, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
+
 import Button from "./Button";
 
 const navItems = [
@@ -132,10 +133,10 @@ const NavBar = () => {
                 Brochure
               </a>
               <button
-                onClick={() => navigate("/register")}
+                onClick={() => navigate("/results")}
                 className="ms-10 px-4 py-1.5 bg-violet-300 text-white text-xs font-general uppercase rounded-full hover:bg-[#6b3fff] transition-colors duration-200 cursor-pointer"
               >
-                Register
+                Results
               </button>
             </div>
 
@@ -207,13 +208,13 @@ const NavBar = () => {
             </a>
           ))}
           <button
-            onClick={() => { closeMobileMenu(); navigate("/register"); }}
+            onClick={() => { closeMobileMenu(); navigate("/results"); }}
             className="mx-4 mt-2 px-4 py-3 bg-violet-300 text-white text-sm font-medium uppercase rounded-lg hover:bg-[#6b3fff] transition-colors duration-200 cursor-pointer text-center"
             style={{
               transitionDelay: isMobileMenuOpen ? `${navItems.length * 40}ms` : "0ms",
             }}
           >
-            Register
+            Results
           </button>
           <a
             href="/pdf/brochure.pdf"

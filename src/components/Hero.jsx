@@ -165,8 +165,8 @@ const Hero = () => {
         {/* Registration closed + brochure */}
         <div className="absolute bottom-5 right-5 z-50 flex flex-col items-end pointer-events-auto">
           <div className="special-font hero-heading text-red-400 text-5xl sm:text-5xl text-right opacity-80 cursor-default select-none">
-            R<b>E</b>GISTRATION <br />
-            CL<b>O</b>SED
+            R<b>E</b>SULTS <br />
+            ANN<b>O</b>UNCED
           </div>
           
           {/* Brochure Download Button */}

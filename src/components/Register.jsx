@@ -398,16 +398,21 @@ const Register = () => {
           transition={{ duration: 0.5 }}
           className="reg-card text-center max-w-md w-full"
         >
-          <div className="text-6xl mb-4">&#x1F512;</div>
-          <h2 className="font-zentry text-3xl sm:text-4xl font-black text-red-400 uppercase mb-4">
-            Registration Closed
+          <div className="text-6xl mb-4">&#x1F3C6;</div>
+          <h2 className="font-zentry text-3xl sm:text-4xl font-black text-violet-300 uppercase mb-4">
+            Results are Announced
           </h2>
           <p className="text-blue-50/70 font-general text-sm mb-6">
-            Registrations for HACKZION V3 are now closed. Thank you for your interest! See you at HACKZION V4.
+            Registrations for HACKZION V3 are now closed. Check the results page to see the shortlisted teams.
           </p>
-          <button onClick={() => navigate("/")} className="reg-btn w-full">
-            Back to Home
-          </button>
+          <div className="flex flex-col gap-3">
+            <button onClick={() => navigate("/results")} className="reg-btn w-full">
+              View Results
+            </button>
+            <button onClick={() => navigate("/")} className="reg-btn-outline w-full">
+              Back to Home
+            </button>
+          </div>
         </motion.div>
       </div>
     </StarsBackground>

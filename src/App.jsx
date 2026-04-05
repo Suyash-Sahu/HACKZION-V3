@@ -12,6 +12,7 @@ import Sponsors from "./components/Sponsors";
 import HackZionTeam from "./components/HackZionTeam";
 import Footer from "./components/Footer";
 import Register from "./components/Register";
+import Results from "./components/Results";
 
 function LandingPage() {
   return (
@@ -38,6 +39,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/results" element={<Results />} />
       </Routes>
     </>
   );
