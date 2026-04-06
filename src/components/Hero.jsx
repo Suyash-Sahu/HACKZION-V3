@@ -169,7 +169,7 @@ const Hero = () => {
             className="special-font hero-heading text-red-400 text-5xl sm:text-5xl text-right opacity-80 cursor-pointer select-none hover:opacity-100 transition-opacity duration-200"
           >
             R<b>E</b>SULTS <br />
-            ANN<b>O</b>UNCED
+            UPD<b>A</b>TED
           </div>
           
           {/* Brochure Download Button */}
