@@ -2,8 +2,8 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/all";
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 // import { useEffect } from "react"; // used by RegistrationCountdown
-// import { useNavigate } from "react-router-dom"; // used by Register button
 
 import LanguageSequenceTitle from "./LanguageSequenceTitle";
 
@@ -87,7 +87,7 @@ gsap.registerPlugin(ScrollTrigger);
 const Hero = () => {
   const [loading, setLoading] = useState(true);
   const videoRef = useRef(null);
-  // const navigate = useNavigate(); // uncomment when re-enabling register button
+  const navigate = useNavigate();
 
   const handleVideoLoad = () => {
     setLoading(false);
@@ -164,7 +164,10 @@ const Hero = () => {
 
         {/* Registration closed + brochure */}
         <div className="absolute bottom-5 right-5 z-50 flex flex-col items-end pointer-events-auto">
-          <div className="special-font hero-heading text-red-400 text-5xl sm:text-5xl text-right opacity-80 cursor-default select-none">
+          <div
+            onClick={() => navigate("/results")}
+            className="special-font hero-heading text-red-400 text-5xl sm:text-5xl text-right opacity-80 cursor-pointer select-none hover:opacity-100 transition-opacity duration-200"
+          >
             R<b>E</b>SULTS <br />
             ANN<b>O</b>UNCED
           </div>
