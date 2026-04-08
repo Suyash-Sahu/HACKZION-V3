@@ -2,6 +2,15 @@ const dbConnect = require('../lib/mongodb');
 const Team = require('../models/Team');
 
 module.exports = async function handler(req, res) {
+  // Support CORS/preflight and avoid Vercel returning 405 for OPTIONS requests.
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Methods", "GET, PUT, OPTIONS");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   const { method } = req;
 
   await dbConnect();

@@ -2,6 +2,15 @@ import dbConnect from '../../lib/mongodb.js';
 import Team from '../../models/Team.js';
 
 export default async function handler(req, res) {
+  // Support CORS/preflight and avoid 405s on OPTIONS.
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Methods", "GET, PUT, OPTIONS");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   const { method } = req;
 
   await dbConnect();

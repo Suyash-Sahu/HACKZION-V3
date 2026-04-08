@@ -15,16 +15,6 @@ const LEADERS = [
     featured: true,
   },
   {
-    id: "l1",
-    role: "Director",
-    name: "Dr. Mohan Babu G.N.",
-    image: "/img/director.webp",
-    colorA: "#00f5ff",
-    colorB: "#0077ff",
-    featured: true,
-  },
-
-  {
     id: "l3",
     role: "Principal",
     name: "Dr. Yuvaraju B N",
