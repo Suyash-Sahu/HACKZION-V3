@@ -133,9 +133,19 @@ export const teamData = [
         description: "Digital marketing & engagement",
         task: "Amplify Reach 🌐"
     },
-    // Media Team
     {
         id: 14,
+        name: "Prasanna B Acharya",
+        team: "Marketing Team",
+        linkedin: "https://www.linkedin.com/in/prasanna-b-acharya?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+        image: "/img/Amongus1.jpeg",
+        crewColor: "#00B4D8",
+        description: "Driving outreach & growth",
+        task: "Broadcast Signal 📡"
+    },
+    // Media Team
+    {
+        id: 15,
         name: "Siddharth Bharti",
         team: "Media Team",
         linkedin: "https://www.linkedin.com/in/siddharthbhartii",
@@ -145,7 +155,7 @@ export const teamData = [
         task: "Record Feed 🎥"
     },
     {
-        id: 15,
+        id: 16,
         name: "Sweta Kumari",
         team: "Media Team",
         linkedin: "https://www.linkedin.com/in/sweta-kumari-759b88309",
