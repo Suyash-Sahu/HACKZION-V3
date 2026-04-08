@@ -10,9 +10,11 @@ import Prize from "./components/Prize";
 import Rules from "./components/Rules";
 import Sponsors from "./components/Sponsors";
 import HackZionTeam from "./components/HackZionTeam";
+import Faculty from "./components/Faculty";
 import Footer from "./components/Footer";
 import Register from "./components/Register";
 import Results from "./components/Results";
+import Leaderboard from "./components/Leaderboard";
 
 function LandingPage() {
   return (
@@ -26,6 +28,7 @@ function LandingPage() {
       <Prize />
       <Rules />
       <Sponsors />
+      <Faculty />
       <HackZionTeam />
       <Footer />
     </main>
@@ -40,6 +43,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/results" element={<Results />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
       </Routes>
     </>
   );

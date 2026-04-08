@@ -7,6 +7,8 @@ import Footer from "./Footer";
 import Tracks from "./Timeline";
 import Prize from "./Prize";
 import Rules from "./Rules";
+import Faculty from "./Faculty";
+
 
 
 
@@ -21,6 +23,7 @@ function App() {
       <Prize/>
       <Rules/>
       <Sponsors />
+      <Faculty/>
       <Footer />
     </main>
   );
