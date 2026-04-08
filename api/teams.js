@@ -1,5 +1,54 @@
 const dbConnect = require('../lib/mongodb');
 const Team = require('../models/Team');
+const teamData = require('../team.json');
+
+const DOMAIN_MAP = {
+  iot: 'IOT',
+  cybersecurity: 'Cyber Security',
+  aiml: 'AIML',
+  openinnovation: 'Open Innovation',
+};
+
+function getTeamScoresDefaults() {
+  return {
+    phase1: { marks: 0, submitted: false },
+    phase2: { marks: 0, submitted: false },
+    phase3: { marks: 0, submitted: false },
+    phase4: { marks: 0, submitted: false },
+  };
+}
+
+async function seedTeamsIfEmpty() {
+  const count = await Team.estimatedDocumentCount();
+  if (count > 0) return;
+
+  const ops = [];
+  for (const [key, names] of Object.entries(teamData)) {
+    const domain = DOMAIN_MAP[key];
+    if (!domain || !Array.isArray(names)) continue;
+
+    for (const name of names) {
+      if (!name) continue;
+      ops.push({
+        updateOne: {
+          filter: { name, domain },
+          update: {
+            $setOnInsert: {
+              name,
+              domain,
+              totalScore: 0,
+              scores: getTeamScoresDefaults(),
+            },
+          },
+          upsert: true,
+        },
+      });
+    }
+  }
+
+  if (ops.length === 0) return;
+  await Team.bulkWrite(ops, { ordered: false });
+}
 
 module.exports = async function handler(req, res) {
   // Support CORS/preflight and avoid Vercel returning 405 for OPTIONS requests.
@@ -16,6 +65,7 @@ module.exports = async function handler(req, res) {
 
     // Ensure DB connection errors are returned as JSON.
     await dbConnect();
+    await seedTeamsIfEmpty();
 
     switch (method) {
       case 'GET': {
@@ -52,10 +102,18 @@ module.exports = async function handler(req, res) {
           }
 
           const updatePromises = updates.map(async (update) => {
-            const team = await Team.findById(update.id);
+            const marks = update && typeof update.marks !== "undefined" ? Number(update.marks) : 0;
+
+            let team = null;
+            if (update && update.id) {
+              team = await Team.findById(update.id);
+            } else if (update && update.name && update.domain) {
+              team = await Team.findOne({ name: update.name, domain: update.domain });
+            }
+
             if (team) {
               team.scores[phase] = {
-                marks: update.marks || 0,
+                marks: Number.isFinite(marks) ? Math.max(0, Math.min(100, marks)) : 0,
                 submitted: true
               };
               await team.save();

@@ -16,6 +16,8 @@ const Leaderboard = () => {
   const [scores, setScores] = useState({});
   const [message, setMessage] = useState({ type: "", text: "" });
 
+  const teamKey = (team) => `${team.domain}::${team.name}`;
+
   useEffect(() => {
     // Cleanup any old auth flag and load teams immediately
     try {
@@ -69,16 +71,16 @@ const Leaderboard = () => {
     setSelectedPhase(phase);
     const initialScores = {};
     teams.forEach(team => {
-      initialScores[team._id] = team.scores[phase]?.marks || 0;
+      initialScores[teamKey(team)] = team.scores[phase]?.marks || 0;
     });
     setScores(initialScores);
     setMessage({ type: "", text: "" });
   };
 
-  const handleScoreChange = (teamId, value) => {
+  const handleScoreChange = (teamKeyStr, value) => {
     setScores(prev => ({
       ...prev,
-      [teamId]: value === "" ? "" : Math.max(0, Math.min(100, Number(value)))
+      [teamKeyStr]: value === "" ? "" : Math.max(0, Math.min(100, Number(value)))
     }));
   };
 
@@ -92,8 +94,9 @@ const Leaderboard = () => {
     setMessage({ type: "", text: "" });
 
     const updates = teams.map(team => ({
-      id: team._id,
-      marks: scores[team._id] || 0
+      name: team.name,
+      domain: team.domain,
+      marks: scores[teamKey(team)] || 0
     }));
 
     try {
@@ -235,8 +238,8 @@ const Leaderboard = () => {
                             type="number"
                             min="0"
                             max="100"
-                            value={scores[team._id] || 0}
-                            onChange={(e) => handleScoreChange(team._id, e.target.value)}
+                            value={scores[teamKey(team)] || 0}
+                            onChange={(e) => handleScoreChange(teamKey(team), e.target.value)}
                             className="w-24 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-center focus:outline-none focus:border-violet-300 mx-auto block"
                           />
                         </td>
