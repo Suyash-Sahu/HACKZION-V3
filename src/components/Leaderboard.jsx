@@ -31,19 +31,35 @@ const Leaderboard = () => {
 
   const fetchTeams = async () => {
     setIsLoading(true);
+    setMessage({ type: "", text: "" });
     try {
       const url = selectedDomain === "All"
         ? "/api/teams"
         : `/api/teams?domain=${selectedDomain}`;
 
       const response = await fetch(url);
-      const data = await response.json();
-
-      if (data.success) {
-        setTeams(data.data);
+      let data;
+      try {
+        data = await response.json();
+      } catch (_) {
+        // Server error pages may come back as HTML/text; make this explicit.
+        throw new Error(`Server returned non-JSON response (${response.status})`);
       }
+
+      if (!response.ok || !data?.success) {
+        setMessage({
+          type: "error",
+          text: data?.message || "Failed to load teams",
+        });
+        setTeams([]);
+        return;
+      }
+
+      setTeams(data.data || []);
     } catch (err) {
       console.error("Failed to fetch teams:", err);
+      setMessage({ type: "error", text: err.message || "Failed to fetch teams" });
+      setTeams([]);
     } finally {
       setIsLoading(false);
     }
@@ -87,17 +103,22 @@ const Leaderboard = () => {
         body: JSON.stringify({ phase: selectedPhase, updates })
       });
 
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch (_) {
+        throw new Error(`Server returned non-JSON response (${response.status})`);
+      }
 
-      if (data.success) {
+      if (response.ok && data?.success) {
         setMessage({ type: "success", text: data.message });
         setSelectedPhase(null);
         fetchTeams();
       } else {
-        setMessage({ type: "error", text: data.message });
+        setMessage({ type: "error", text: data?.message || "Failed to save scores" });
       }
     } catch (err) {
-      setMessage({ type: "error", text: "Failed to save scores" });
+      setMessage({ type: "error", text: err.message || "Failed to save scores" });
     } finally {
       setIsSaving(false);
     }
