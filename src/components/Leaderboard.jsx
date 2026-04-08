@@ -8,11 +8,6 @@ const PHASES = ["phase1", "phase2", "phase3", "phase4"];
 
 const Leaderboard = () => {
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState("");
-  const [authError, setAuthError] = useState("");
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
-  
   const [teams, setTeams] = useState([]);
   const [selectedDomain, setSelectedDomain] = useState("All");
   const [selectedPhase, setSelectedPhase] = useState(null);
@@ -22,60 +17,17 @@ const Leaderboard = () => {
   const [message, setMessage] = useState({ type: "", text: "" });
 
   useEffect(() => {
-    const auth = localStorage.getItem("leaderboardAuth");
-    if (auth === "true") {
-      setIsAuthenticated(true);
+    // Cleanup any old auth flag and load teams immediately
+    try {
+      localStorage.removeItem("leaderboardAuth");
+    } catch (_) {
+      // ignore
     }
   }, []);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchTeams();
-    }
-  }, [selectedDomain, isAuthenticated]);
-
-  const handleAuth = async (e) => {
-    e.preventDefault();
-    setAuthError("");
-    setIsAuthenticating(true);
-
-    try {
-      // For local development, check env variable directly
-      // For production, use API route
-      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      
-      if (isLocal) {
-        // Local development - check against hardcoded value or env
-        const expectedPassword = import.meta.env.VITE_LEADERBOARD_PASSWORD || "147258";
-        if (password === expectedPassword) {
-          localStorage.setItem("leaderboardAuth", "true");
-          setIsAuthenticated(true);
-        } else {
-          setAuthError("Invalid password");
-        }
-      } else {
-        // Production - use API route
-        const response = await fetch("/api/auth", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ password }),
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-          localStorage.setItem("leaderboardAuth", "true");
-          setIsAuthenticated(true);
-        } else {
-          setAuthError("Invalid password");
-        }
-      }
-    } catch (err) {
-      setAuthError("Authentication failed");
-    } finally {
-      setIsAuthenticating(false);
-    }
-  };
+    fetchTeams();
+  }, [selectedDomain]);
 
   const fetchTeams = async () => {
     setIsLoading(true);
@@ -150,77 +102,6 @@ const Leaderboard = () => {
       setIsSaving(false);
     }
   };
-
-  // Password Protection Screen
-  if (!isAuthenticated) {
-    return (
-      <StarsBackground>
-        <div className="min-h-screen flex-center px-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3 }}
-            className="max-w-md w-full bg-[#0a0a0a] border border-white/10 rounded-2xl p-8"
-          >
-            <div className="text-center mb-6">
-              <div className="text-5xl mb-4">🏆</div>
-              <h2 className="font-zentry text-3xl font-black text-blue-75 uppercase mb-2">
-                Leaderboard Access
-              </h2>
-              <p className="text-blue-50/50 font-general text-sm">
-                Enter password to view and manage scores
-              </p>
-            </div>
-
-            <form onSubmit={handleAuth}>
-              <div className="mb-6">
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter password"
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-violet-300 transition-colors"
-                  autoFocus
-                />
-              </div>
-
-              <AnimatePresence>
-                {authError && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="mb-4 p-3 rounded-lg border border-red-500/30 bg-red-500/10"
-                  >
-                    <p className="text-red-400 text-sm font-general text-center">
-                      {authError}
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              <button
-                type="submit"
-                disabled={isAuthenticating || !password}
-                className="w-full px-6 py-3 bg-violet-300 text-white font-general uppercase tracking-wider rounded-lg hover:bg-[#6b3fff] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              >
-                {isAuthenticating ? "Verifying..." : "Access Leaderboard"}
-              </button>
-            </form>
-
-            <div className="mt-6 text-center">
-              <button
-                onClick={() => navigate("/")}
-                className="text-blue-50/50 hover:text-blue-50 font-general text-sm transition-colors"
-              >
-                ← Back to Home
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      </StarsBackground>
-    );
-  }
 
   return (
     <StarsBackground>

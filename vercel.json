@@ -11,17 +11,10 @@
       "use": "@vercel/node"
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/((?!api\\/).*)",
-      "dest": "/index.html"
+      "source": "^/(?!api(?:/|$)).*$",
+      "destination": "/index.html"
     }
   ],
   "env": {
